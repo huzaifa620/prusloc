@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TextHeader from "../components/TextHeader";
@@ -62,7 +62,7 @@ export default function Scripts() {
       </div>
       {isDatePickerOpen && (
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white p-4 rounded-2xl flex items-center justify-center h-1/3 w-1/3">
+          <div className="bg-white shadow-2xl p-4 rounded-2xl flex items-center justify-center h-1/3 w-1/3">
             <div className="flex flex-col items-center justify-center space-y-6">
                 <h2 className="text-xl font-semibold">Select a Date</h2>
                 <DatePicker
@@ -74,7 +74,7 @@ export default function Scripts() {
                     calendarClassName="bg-white border rounded-lg shadow-md p-4 mt-2"
                     locale="en-GB"
                     filterDate={isPastFriday}
-                    className="border border-black rounded-lg py-2 px-4 w-full"
+                    className="border border-black rounded-lg py-2 px-4 w-full shadow-lg"
                 />
                 {selectedDate && (
                     <p className="mt-4">

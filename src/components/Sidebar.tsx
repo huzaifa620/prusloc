@@ -6,7 +6,7 @@ export default function Sidebar() {
   const {pathname} = useLocation()
   return (
     <div className="px-6 py-4 h-full text-primary border-r border-gray-200">
-        <h2 className="text-2xl font-bold uppercase">prusloc</h2>
+        <Link to='/' className="text-2xl font-bold uppercase cursor-pointer">prusloc</Link>
         <div className="my-8">
             {links?.map((link)=>{
               const styles = pathname === link.href ? 'bg-primary text-white hover:bg-primary':'hover:bg-violet-50'

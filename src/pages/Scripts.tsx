@@ -16,7 +16,6 @@ export default function Scripts() {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date(new Date().setDate(new Date().getDate() - (new Date().getDay() + 2) % 7)));
 
-
   const handleRunScriptClick = () => {
     setIsDatePickerOpen(!isDatePickerOpen);
   };

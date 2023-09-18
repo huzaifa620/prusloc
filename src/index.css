@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "Manrope", sans-serif;
+  letter-spacing: 1px;
+}
+
+@layer components {
+  .bg-primary {
+    @apply bg-[#30415b];
+  }
+
+  .text-primary {
+    @apply text-[#30415b];
+  }
+}

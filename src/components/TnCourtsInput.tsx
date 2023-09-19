@@ -70,10 +70,10 @@ export default function TnCourtsInput() {
             {Object.entries(court_names).map(([key, countyName]) => (
               <label key={key} className="inline-flex items-center">
                 <input
-                  type="checkbox" // Change the input type to checkbox
+                  type="checkbox"
                   name="county"
                   value={countyName}
-                  checked={formData.county.includes(countyName)} // Check if it's included in the selected counties
+                  checked={formData.county.includes(countyName)}
                   onChange={() => handleCountyChange(countyName)}
                   className="mr-2"
                 />
@@ -94,6 +94,7 @@ export default function TnCourtsInput() {
                   checked={formData.mode === modeName}
                   onChange={() => handleModeChange(modeName)}
                   className="mr-2"
+                  required
                 />
                 {modeName}
               </label>
@@ -112,6 +113,7 @@ export default function TnCourtsInput() {
                 isClearable
                 locale="en-GB"
                 className="border border-black rounded-lg py-2 px-4 w-full shadow-lg"
+                required
               />
             </div>
             <div className="flex items-center justify-between w-full">
@@ -123,6 +125,7 @@ export default function TnCourtsInput() {
                 isClearable
                 locale="en-GB"
                 className="border border-black rounded-lg py-2 px-4 w-full shadow-lg"
+                required
               />
             </div>
           </div>
@@ -152,12 +155,11 @@ export default function TnCourtsInput() {
             </div>
           </div>
         </div>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded-full w-full mt-6 shadow-lg hover:bg-blue-700"
-        >
-          Submit
-        </button>
+        <div className="flex flex-col space-y-2 pt-4 shadow-xl rounded-2xl w-1/2 justify-center">
+          <button className="px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded">
+            Confirm
+          </button>
+        </div>
       </form>
     </div>
   );

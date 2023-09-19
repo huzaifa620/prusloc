@@ -55,22 +55,27 @@ export default function Scripts() {
         </table>
       </div>
       {isDatePickerOpen && (
+
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white shadow-2xl p-4 rounded-2xl flex items-center justify-center h-[85%] w-1/2">
-            <div className="flex flex-col items-center justify-center space-y-2">
-              {/* <ForeclosureInput /> */}
-              <TnCourtsInput />
-              <div className="flex space-x-4 items-center justify-center">
-                <button className="px-4 py-2 bg-primary text-white rounded">
-                  Confirm
-                </button>
-                <button className="px-4 py-2 bg-primary text-white rounded" onClick={handleRunScriptClick}>
-                  Cancel
-                </button>
+          <div className="relative w-1/2 h-4/5">
+            
+            <div className="absolute md:top-4 md:right-4 xl:top-8 xl:right-12">
+              <button onClick={handleRunScriptClick} className="w-8 h-8 bg-primary text-white rounded-full hover:opacity-75 flex items-center justify-center" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <div className="bg-white shadow-2xl p-4 rounded-2xl flex items-center justify-center w-full h-full">
+              <div className="w-full h-full overflow-y-auto">
+                <div className="flex flex-col items-center space-y-2 h-full w-full">
+                  <TnCourtsInput />
+                </div>
               </div>
             </div>
           </div>
         </div>
+
       )}
     </div>
   );

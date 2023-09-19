@@ -69,8 +69,8 @@ export default function Scripts() {
             <div className="bg-white shadow-2xl p-4 rounded-2xl flex items-center justify-center w-full h-full">
               <div className="w-full h-full overflow-y-auto">
                 <div className="flex flex-col items-center justify-center space-y-2 h-full w-full">
-                  {/* <TnCourtsInput /> */}
-                  <ForeclosureInput />
+                  <TnCourtsInput />
+                  {/* <ForeclosureInput /> */}
                 </div>
               </div>
             </div>

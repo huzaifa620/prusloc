@@ -9,9 +9,28 @@ function isPastFriday(date: Date) {
 export default function ForeclosureInput() {
 
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date(new Date().setDate(new Date().getDate() - (new Date().getDay() + 2) % 7)));
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log('Form Data:', selectedDate);
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/script/tnledger_foreclosures`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ date: new Date(selectedDate || '').toLocaleDateString('en-US') }),
+            });
+
+            if (response.ok) {
+                // Request was successful
+                console.log('POST request successful');
+            } else {
+                // Request failed
+                console.error('POST request failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -24,6 +43,7 @@ export default function ForeclosureInput() {
                 isClearable
                 calendarClassName="bg-white shadow-2xl border border-black"
                 locale="en-GB"
+                required
                 filterDate={isPastFriday}
                 className="border border-black rounded-xl py-2 px-4 shadow-lg w-[240px]"
             />

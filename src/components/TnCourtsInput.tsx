@@ -155,8 +155,8 @@ export default function TnCourtsInput() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col space-y-2 pt-4 shadow-xl rounded-2xl w-1/2 justify-center">
-          <button className="px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded">
+        <div className="flex flex-col space-y-2 pt-4 shadow-xl rounded-3xl w-1/2 justify-center">
+          <button type='submit' className="px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded">
             Confirm
           </button>
         </div>

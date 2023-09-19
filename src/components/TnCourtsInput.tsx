@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface FormData {
-  county: string;
+  county: string[];
   mode: string;
   from: Date | null;
   to: Date | null;
@@ -12,51 +12,54 @@ interface FormData {
 }
 
 export default function TnCourtsInput() {
-    const [formData, setFormData] = useState<FormData>({
-        county: 'Montgomery',
-        mode: 'General Session',
-        from: new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
-        to: new Date(new Date().getFullYear(), new Date().getMonth(), 0),
-        username: '',
-        password: '',
-      });
-      
+  const [formData, setFormData] = useState<FormData>({
+    county: [],
+    mode: 'General Session',
+    from: new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
+    to: new Date(new Date().getFullYear(), new Date().getMonth(), 0),
+    username: '',
+    password: '',
+  });
 
-    const handleCountyChange = (county: string) => {
-        setFormData({ ...formData, county });
-    };
+  const handleCountyChange = (countyName: string) => {
+    const updatedCounties = formData.county.includes(countyName)
+      ? formData.county.filter((county) => county !== countyName)
+      : [...formData.county, countyName];
 
-    const handleModeChange = (mode: string) => {
-        setFormData({ ...formData, mode });
-    };
+    setFormData({ ...formData, county: updatedCounties });
+  };
 
-    const handleDateChange = (fieldName: 'from' | 'to', date: Date | null) => {
-        setFormData({ ...formData, [fieldName]: date });
-    };
+  const handleModeChange = (mode: string) => {
+    setFormData({ ...formData, mode });
+  };
 
-    const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+  const handleDateChange = (fieldName: 'from' | 'to', date: Date | null) => {
+    setFormData({ ...formData, [fieldName]: date });
+  };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log('Form Data:', formData);
-    };
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-    const court_names = {
-        mon: 'Montgomery',
-        rut: 'Rutherford',
-        rob: 'Robertson',
-        sum: 'Sumner',
-        will: 'Williamson',
-        wil: 'Wilson',
-    };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Form Data:', formData);
+  };
 
-    const mode_names = {
-        gen: 'General Session',
-        cir: 'Circuit Courts',
-    };
+  const court_names = {
+    mon: 'Montgomery',
+    rut: 'Rutherford',
+    rob: 'Robertson',
+    sum: 'Sumner',
+    will: 'Williamson',
+    wil: 'Wilson',
+  };
+
+  const mode_names = {
+    gen: 'General Session',
+    cir: 'Circuit Courts',
+  };
 
   return (
     <div className="p-10">
@@ -67,10 +70,10 @@ export default function TnCourtsInput() {
             {Object.entries(court_names).map(([key, countyName]) => (
               <label key={key} className="inline-flex items-center">
                 <input
-                  type="radio"
+                  type="checkbox" // Change the input type to checkbox
                   name="county"
                   value={countyName}
-                  checked={formData.county === countyName}
+                  checked={formData.county.includes(countyName)} // Check if it's included in the selected counties
                   onChange={() => handleCountyChange(countyName)}
                   className="mr-2"
                 />
@@ -149,6 +152,12 @@ export default function TnCourtsInput() {
             </div>
           </div>
         </div>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded-full w-full mt-6 shadow-lg hover:bg-blue-700"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );

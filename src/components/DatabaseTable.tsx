@@ -1,6 +1,6 @@
 "use client";
 
-import { Icon,Table,TableRow, TableCell, TableHead, TableHeaderCell,TableBody, BadgeDelta, Title, Flex, Select, SelectItem, MultiSelect, MultiSelectItem, DeltaType } from "@tremor/react";
+import { Icon,Table,TableRow, TableCell, TableHead, TableHeaderCell,TableBody, Title, Flex, Select, SelectItem, MultiSelect, MultiSelectItem } from "@tremor/react";
 import { InformationCircleIcon } from "@heroicons/react/solid";
 import { useState, useEffect } from "react";
 

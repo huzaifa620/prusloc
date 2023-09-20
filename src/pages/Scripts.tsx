@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TextHeader from "../components/TextHeader";
-import ForeclosureInput from "../components/ForeclosureInput"
+// import ForeclosureInput from "../components/ForeclosureInput"
 import TnCourtsInput from "../components/TnCourtsInput"
 
 const scripts = [

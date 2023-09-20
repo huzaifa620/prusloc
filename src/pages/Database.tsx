@@ -4,7 +4,7 @@ import DatabaseTable from '../components/DatabaseTable';
 
 export default function Database() {
   const [data, setData] = useState([]);
-  const [tableName, setTableName] = useState('tnledger_foreclosures')
+  const [tableName, _] = useState('tnledger_foreclosures')
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/data/${tableName}`)

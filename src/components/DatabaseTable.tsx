@@ -18,7 +18,7 @@ import {
   DeltaType,
 } from "@tremor/react";
 import { InformationCircleIcon } from "@heroicons/react/solid";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 export type SalesPerson = {
   name: string;
   leads: number;
@@ -88,9 +88,17 @@ const deltaTypes: { [key: string]: DeltaType } = {
 };
 
 export default function DatabaseTable( { data }: Props ) {
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  const [selectedNames, setSelectedNames] = useState<string[]>([]);
 
+    const [tableHeader, setTableHeader] = useState<string[]>([])
+    const [selectedStatus, setSelectedStatus] = useState("all");
+    const [selectedNames, setSelectedNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setTableHeader(Object.keys(data[0]));
+    }
+  }, [data]);
+  
   const isSalesPersonSelected = (salesPerson: SalesPerson) =>
     (salesPerson.status === selectedStatus || selectedStatus === "all") &&
     (selectedNames.includes(salesPerson.name) || selectedNames.length === 0);
@@ -130,18 +138,19 @@ export default function DatabaseTable( { data }: Props ) {
           <SelectItem value="underperforming">Underperforming</SelectItem>
         </Select>
       </div>
+
       <Table className="mt-6">
-        <TableHead className="f">
-          <TableRow>
-            <TableHeaderCell>Name</TableHeaderCell>
-            <TableHeaderCell className="text-right">Leads</TableHeaderCell>
-            <TableHeaderCell className="text-right">Sales ($)</TableHeaderCell>
-            <TableHeaderCell className="text-right">Quota ($)</TableHeaderCell>
-            <TableHeaderCell className="text-right">Variance</TableHeaderCell>
-            <TableHeaderCell className="text-right">Region</TableHeaderCell>
-            {/* <TableHeaderCell className="text-right">Status</TableHeaderCell> */}
-          </TableRow>
+
+        <TableHead>
+            <TableRow>
+                {tableHeader.map((item, index) => (
+                    <TableHeaderCell key={index} className={`uppercase ${index === 0 ? '' : 'text-right'}`}>
+                        {item.replace('_', ' ')}
+                    </TableHeaderCell>
+                ))}
+            </TableRow>
         </TableHead>
+
 
         <TableBody className="font-semibold text-tremor-content-emphasis">
           {salesPeople

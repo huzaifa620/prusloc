@@ -34,7 +34,7 @@ export default function TnCourtsInput() {
   };
 
   const handleDateChange = (fieldName: 'from' | 'to', date: Date | null) => {
-    setFormData({ ...formData, [fieldName]: date });
+    setFormData({ ...formData, [fieldName]: date?.toLocaleDateString('en-US') });
   };
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,10 +42,29 @@ export default function TnCourtsInput() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Form Data:', formData);
-  };
+    try {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/script/tn_courts`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+            // Request was successful
+            console.log('POST request successful');
+        } else {
+            // Request failed
+            console.error('POST request failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
   const court_names = {
     mon: 'Montgomery',
@@ -58,7 +77,7 @@ export default function TnCourtsInput() {
 
   const mode_names = {
     gen: 'General Session',
-    cir: 'Circuit Courts',
+    cir: 'Circuit Court',
   };
 
   return (

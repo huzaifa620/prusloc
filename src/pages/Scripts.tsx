@@ -17,7 +17,7 @@ export default function Scripts() {
   };
 
   return (
-    <div>
+    <div className="h-screen">
       <TextHeader title="Scripts" />
       <div className="relative overflow-x-auto my-8 w-10/12 mx-auto rounded-3xl shadow-2xl">
         <table className="w-full text-center text-primary border">

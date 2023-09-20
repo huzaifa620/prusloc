@@ -29,6 +29,10 @@ export type SalesPerson = {
   status: string;
 };
 
+type Props = {
+    data: String[];
+}
+
 export const salesPeople: SalesPerson[] = [
   {
     name: "Peter Doe",
@@ -83,7 +87,7 @@ const deltaTypes: { [key: string]: DeltaType } = {
   underperforming: "moderateDecrease",
 };
 
-export default function DatabaseTable() {
+export default function DatabaseTable( { data }: Props ) {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [selectedNames, setSelectedNames] = useState<string[]>([]);
 

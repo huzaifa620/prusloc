@@ -46,7 +46,7 @@ export default function TnCourtsInput() {
     e.preventDefault();
     console.log('Form Data:', formData);
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/script/tn_courts`, {
+        const response = await fetch(`${import.meta.env.VITE_API_FLASK_BASE_URL}/script/tn_courts`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

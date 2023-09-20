@@ -5,7 +5,7 @@ import { links } from "../data/SidebarLinks"
 
 export default function Home() {
   return (
-    <div className="w-full h-full">
+    <div className="w-full app">
       <TextHeader title="Dashboard"/>
       <div className="grid grid-cols-3 w-full mt-8 text-primary">
         {links.slice(1).map((el)=>(

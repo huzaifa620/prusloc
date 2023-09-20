@@ -3,7 +3,7 @@ import TextHeader from "../components/TextHeader";
 
 export default function DefaultInputs() {
   return (
-    <div>
+    <div className="app">
         <TextHeader title="Default Inputs"/>
     </div>
   )

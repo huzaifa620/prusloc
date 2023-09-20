@@ -75,7 +75,7 @@ export default function DatabaseTable( { data, tableName }: Props ) {
         <TableHead className="bg-primary">
             <TableRow>
                 {tableHeader.map((item, index) => (
-                    <TableHeaderCell key={index} className={`uppercase text-white ${index === 0 ? '' : 'text-right'}`}>
+                    <TableHeaderCell key={index} className={`uppercase text-white text-center ${index === 0 ? '' : ''}`}>
                         {item.replace('_', ' ')}
                     </TableHeaderCell>
                 ))}
@@ -88,12 +88,12 @@ export default function DatabaseTable( { data, tableName }: Props ) {
             .map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.date_ran.split('T')[0]}</TableCell>
-                <TableCell className="text-right">{item.tdn_no}</TableCell>
-                <TableCell className="text-right">{item.url}</TableCell>
-                <TableCell className="text-right">{item.borrower}</TableCell>
-                <TableCell className="text-right">{item.address}</TableCell>
-                <TableCell className="text-right">{item.original_trustee}</TableCell>
-                <TableCell className="text-right">{item.occurrence}</TableCell>
+                <TableCell className="text-center">{item.tdn_no}</TableCell>
+                <TableCell className="text-center">{item.url}</TableCell>
+                <TableCell className="text-center">{item.borrower}</TableCell>
+                <TableCell className="text-center">{item.address}</TableCell>
+                <TableCell className="text-center">{item.original_trustee}</TableCell>
+                <TableCell className="text-center">{item.occurrence}</TableCell>
                 {/* <TableCell className="text-right">
                   <BadgeDelta deltaType={deltaTypes[item.status]} size="xs">
                     {item.status}

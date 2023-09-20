@@ -16,9 +16,9 @@ export default function Database() {
   }, []);
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col h-screen">
       <TextHeader title="Database" />
-      <div className="p-4">
+      <div className="p-4 h-[95%]">
         <DatabaseTable data={data} tableName={tableName} />
       </div>
     </div>

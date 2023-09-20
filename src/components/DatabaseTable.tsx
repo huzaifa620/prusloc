@@ -29,7 +29,6 @@ export default function DatabaseTable( { data, tableName }: Props ) {
     if (data && data.length > 0) {
       setTableHeader(Object.keys(data[0]));
     }
-    console.log(selectedDate, selectedTdnNo)
   }, [data, selectedDate, selectedTdnNo]);
   
   const isForeclosureSelected = (foreclosures: Foreclosure) =>
@@ -37,7 +36,7 @@ export default function DatabaseTable( { data, tableName }: Props ) {
     (selectedTdnNo.includes(foreclosures.tdn_no) || selectedTdnNo.length === 0);
 
   return (
-    <div className="bg-white p-8 rounded-3xl border shadow-2xl">
+    <div className="bg-white p-8 h-full rounded-3xl border shadow-2xl">
       <div>
         <Flex className="space-x-0.5" justifyContent="start" alignItems="center">
           <Title className="uppercase"> { tableName.replace('_', ' ') } </Title>
@@ -71,18 +70,17 @@ export default function DatabaseTable( { data, tableName }: Props ) {
 
       </div>
 
-      <Table className="mt-6">
+      <Table className="mt-4 h-[92.5%] border rounded-xl">
 
-        <TableHead>
+        <TableHead className="bg-primary">
             <TableRow>
                 {tableHeader.map((item, index) => (
-                    <TableHeaderCell key={index} className={`uppercase ${index === 0 ? '' : 'text-right'}`}>
+                    <TableHeaderCell key={index} className={`uppercase text-white ${index === 0 ? '' : 'text-right'}`}>
                         {item.replace('_', ' ')}
                     </TableHeaderCell>
                 ))}
             </TableRow>
         </TableHead>
-
 
         <TableBody className="font-semibold text-tremor-content-emphasis">
           {data
@@ -104,6 +102,7 @@ export default function DatabaseTable( { data, tableName }: Props ) {
               </TableRow>
             ))}
         </TableBody>
+        
       </Table>
     </div>
   );

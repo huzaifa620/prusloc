@@ -18,7 +18,7 @@ const AppLayout = ()=>{
         <div className="col-span-1 h-screen">
             <Sidebar/>
         </div>
-        <div className="col-span-4 px-4 py-6">
+        <div className="col-span-4 px-4 py-6 bg-gray-100">
             <Outlet/>
         </div>
       </div>

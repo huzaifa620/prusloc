@@ -19,8 +19,8 @@ export default function Scripts() {
   return (
     <div>
       <TextHeader title="Scripts" />
-      <div className="relative overflow-x-auto my-8 w-10/12 mx-auto shadow rounded-md">
-        <table className="w-full text-center text-primary border shadow-2xl">
+      <div className="relative overflow-x-auto my-8 w-10/12 mx-auto rounded-3xl shadow-2xl">
+        <table className="w-full text-center text-primary border">
           <thead className="text-white uppercase bg-primary text-lg">
             <tr>
               <th scope="col" className="px-6 py-3">

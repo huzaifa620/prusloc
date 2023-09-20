@@ -70,7 +70,7 @@ export default function DatabaseTable( { data, tableName }: Props ) {
 
       </div>
 
-      <Table className="mt-4 h-[92.5%] border rounded-xl">
+      <Table className="mt-4 h-[85%] 2xl:h-[90%] border rounded-xl">
 
         <TableHead className="bg-primary">
             <TableRow>

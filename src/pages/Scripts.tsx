@@ -4,8 +4,9 @@ import ForeclosureInput from "../components/ForeclosureInput"
 import TnCourtsInput from "../components/TnCourtsInput"
 
 const scripts = [
-  { title: "Script 1", logs: "Ran Script 1", lastRun: "9-9-2023" },
-  { title: "Script 2", logs: "Ran Script 2", lastRun: "10-9-2023" },
+  { title: "Tnledger Foreclosure", logs: "Ran Script 1", lastRun: "9-9-2023" },
+  { title: "Tnledger Courts", logs: "Ran Script 2", lastRun: "10-9-2023" },
+  { title: "Tn Courts", logs: "Ran Script 3", lastRun: "10-9-2023" }
 ];
 
 export default function Scripts() {
@@ -19,8 +20,8 @@ export default function Scripts() {
     <div>
       <TextHeader title="Scripts" />
       <div className="relative overflow-x-auto my-8 w-10/12 mx-auto shadow rounded-md">
-        <table className="w-full text-sm text-left text-primary">
-          <thead className="text-xs text-white uppercase bg-primary">
+        <table className="w-full text-center text-primary border shadow-2xl">
+          <thead className="text-white uppercase bg-primary text-lg">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Script
@@ -36,7 +37,7 @@ export default function Scripts() {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {scripts.map((script, index) => (
               <tr className="bg-white border-b" key={index}>
                 <th scope="row" className="px-6 py-4 font-medium text-primary whitespace-nowrap">
@@ -45,7 +46,7 @@ export default function Scripts() {
                 <td className="px-6 py-4">{script.logs}</td>
                 <td className="px-6 py-4">{script.lastRun}</td>
                 <td className="px-6 py-4">
-                  <button className="px-4 py-2 bg-primary text-white rounded" onClick={handleRunScriptClick}>
+                  <button className="px-4 py-2 bg-primary text-white rounded hover:bg-opacity-90" onClick={handleRunScriptClick}>
                     Run Script
                   </button>
                 </td>

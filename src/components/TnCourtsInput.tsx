@@ -13,7 +13,7 @@ interface FormData {
 
 export default function TnCourtsInput() {
 
-  const [status, setStatus] = useState<boolean>(false);
+  const [status, _] = useState<boolean>(false);
   
   useEffect(()=> {
     console.log(status)

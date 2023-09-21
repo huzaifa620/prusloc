@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -12,6 +12,33 @@ interface FormData {
 }
 
 export default function TnCourtsInput() {
+
+  const [status, setStatus] = useState<boolean>(false);
+
+  useEffect(() => {
+    const eventSource = new EventSource(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/status-updates`);
+  
+    eventSource.addEventListener('message', (event) => {
+      if (JSON.parse(event.data).script === 'tn_courts') {
+        setStatus(false)
+      }
+    });
+  
+    eventSource.addEventListener('error', (error) => {
+      console.error('SSE error:', error);
+      eventSource.close();
+    });
+  
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+  
+
+  useEffect(()=> {
+    console.log(status)
+  }, [status])
+
   const [formData, setFormData] = useState<FormData>({
     county: [],
     mode: 'General Session',
@@ -34,7 +61,7 @@ export default function TnCourtsInput() {
   };
 
   const handleDateChange = (fieldName: 'from' | 'to', date: Date | null) => {
-    setFormData({ ...formData, [fieldName]: date?.toLocaleDateString('en-US') });
+    setFormData({ ...formData, [fieldName]: date });
   };
 
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +84,7 @@ export default function TnCourtsInput() {
         if (response.ok) {
             // Request was successful
             console.log('POST request successful');
+            setStatus(true)
         } else {
             // Request failed
             console.error('POST request failed');
@@ -175,8 +203,8 @@ export default function TnCourtsInput() {
           </div>
         </div>
         <div className="flex flex-col space-y-2 pt-4 shadow-xl rounded-3xl w-1/2 justify-center">
-          <button type='submit' className="px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded">
-            Confirm
+          <button type='submit' disabled={formData.county.length==0 || status} className="px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded">
+            { !status ? 'Confirm': 'Running...'}
           </button>
         </div>
       </form>

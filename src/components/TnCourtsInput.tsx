@@ -14,27 +14,7 @@ interface FormData {
 export default function TnCourtsInput() {
 
   const [status, setStatus] = useState<boolean>(false);
-
-  useEffect(() => {
-    const eventSource = new EventSource(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/status-updates`);
   
-    eventSource.addEventListener('message', (event) => {
-      if (JSON.parse(event.data).script === 'tn_courts') {
-        setStatus(false)
-      }
-    });
-  
-    eventSource.addEventListener('error', (error) => {
-      console.error('SSE error:', error);
-      eventSource.close();
-    });
-  
-    return () => {
-      eventSource.close();
-    };
-  }, []);
-  
-
   useEffect(()=> {
     console.log(status)
   }, [status])
@@ -82,9 +62,30 @@ export default function TnCourtsInput() {
         });
 
         if (response.ok) {
-            // Request was successful
             console.log('POST request successful');
-            setStatus(true)
+            //setStatus(true)
+            const updateScriptStatus = async (scriptName: string) => {
+              try {
+                const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/status/${scriptName}`, {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({}),
+                });
+                
+                if (response.ok) {
+                  console.log(`Successfully updated status for ${scriptName}`);
+                } else {
+                  console.error(`Failed to update status for ${scriptName}`);
+                }
+              } catch (error) {
+                console.error('Error:', error);
+              }
+            };
+            
+            updateScriptStatus('tn_courts');            
+            
         } else {
             // Request failed
             console.error('POST request failed');
@@ -203,7 +204,7 @@ export default function TnCourtsInput() {
           </div>
         </div>
         <div className="flex flex-col space-y-2 pt-4 shadow-xl rounded-3xl w-1/2 justify-center">
-          <button type='submit' disabled={formData.county.length==0 || status} className="px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded">
+          <button type='submit' disabled={formData.county.length==0 || status} className="px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded cursor-pointer">
             { !status ? 'Confirm': 'Running...'}
           </button>
         </div>

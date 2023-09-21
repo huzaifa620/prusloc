@@ -1,16 +1,59 @@
-import { useState } from "react";
+import { useState, useLayoutEffect, useEffect } from "react";
 import TextHeader from "../components/TextHeader";
 // import ForeclosureInput from "../components/ForeclosureInput"
 import TnCourtsInput from "../components/TnCourtsInput"
 
-const scripts = [
-  { title: "Tnledger Foreclosure", logs: "Ran Script 1", lastRun: "9-9-2023" },
-  { title: "Tnledger Courts", logs: "Ran Script 2", lastRun: "10-9-2023" },
-  { title: "Tn Courts", logs: "Ran Script 3", lastRun: "10-9-2023" }
-];
+interface ScriptsStatus {
+  completion_date_and_time: string;
+  error?: string | null;
+  inputs: Record<string, any>;
+  script: string;
+  status: string;
+}
 
 export default function Scripts() {
-    
+
+  const [scriptsStatus, setScriptsStatus] = useState<ScriptsStatus[]>([]);
+  const [status, setStatus] = useState<boolean>(false);
+
+  useLayoutEffect(() => {
+    fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/data/scripts_status`)
+      .then((response) => response.json())
+      .then((data) => {
+        setScriptsStatus(data);
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  }, [])
+
+  useEffect(() => {
+    const eventSource = new EventSource(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/status-updates`);
+  
+    eventSource.addEventListener('message', (event) => {
+      const eventData = JSON.parse(event.data);
+      if (eventData.script === 'tn_courts') {
+        setStatus(false);
+  
+        // Fetch the latest script status data when an update is received
+        fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/data/scripts_status`)
+          .then((response) => response.json())
+          .then((data) => {
+            setScriptsStatus(data);
+          })
+          .catch((error) => console.error('Error fetching data:', error));
+      }
+    });
+  
+    eventSource.addEventListener('error', (error) => {
+      console.error('SSE error:', error);
+      eventSource.close();
+    });
+  
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+  
+  
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const handleRunScriptClick = () => {
     setIsDatePickerOpen(!isDatePickerOpen);
@@ -27,29 +70,41 @@ export default function Scripts() {
                 Script
               </th>
               <th scope="col" className="px-6 py-3">
-                Logs
+                Status
               </th>
               <th scope="col" className="px-6 py-3">
                 Last Run
               </th>
               <th scope="col" className="px-6 py-3">
-                Run Script
+                Action
               </th>
             </tr>
           </thead>
           <tbody className="">
-            {scripts.map((script, index) => (
+            {scriptsStatus.map((script, index) => (
               <tr className="bg-white border-b" key={index}>
-                <th scope="row" className="px-6 py-4 font-medium text-primary whitespace-nowrap">
-                  {script.title}
+                <th scope="row" className="px-6 py-4 font-medium text-primary whitespace-nowrap uppercase">
+                  {script.script.replace('_', ' ')}
                 </th>
-                <td className="px-6 py-4">{script.logs}</td>
-                <td className="px-6 py-4">{script.lastRun}</td>
+                <td className="px-6 py-4">{script.status}</td>
+                <td className="px-6 py-4">{script.completion_date_and_time.split('T')[0]}</td>
                 <td className="px-6 py-4">
-                  <button className="px-4 py-2 bg-primary text-white rounded hover:bg-opacity-90" onClick={handleRunScriptClick}>
-                    Run Script
+                  <button
+                    disabled={script.status === 'running'}
+                    className={`px-4 py-2 bg-primary text-white rounded hover:bg-opacity-90 ${(script.status === 'running' || status) && 'opacity-70 cursor-not-allowed'}`}
+                    onClick={handleRunScriptClick}
+                  >
+                    {(script.status === 'running' || status) ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="w-4 h-4 border-t-2 border-r-2 border-blue-500 rounded-full animate-spin"></div>
+                        <span>Running...</span>
+                      </div>
+                    ) : (
+                      'Run Script'
+                    )}
                   </button>
                 </td>
+
               </tr>
             ))}
           </tbody>

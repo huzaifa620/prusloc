@@ -28,10 +28,6 @@ export default function Scripts() {
       .catch((error) => console.error('Error fetching data:', error));
   };
 
-  useEffect(() => {
-    console.log(scriptsStatus)
-  }, [scriptsStatus])
-
   useLayoutEffect(() => {
     fetchScriptStatusData()
   }, [isInput])

@@ -38,7 +38,17 @@ export default function Database() {
 
   return (
     <div className="flex flex-col h-screen app">
-      <TextHeader title="Database" link={!mainView ? 'DB Menu' : undefined} />
+      <div className='flex'>
+        <TextHeader title="Database" />
+        {
+          !mainView && (
+            <>
+              <h2 className="font-bold text-xl ml-4 text-[#30415b] flex gap-4 items-center"> {` > `}</h2>
+              <h2 className="font-bold text-xl ml-4 text-[#30415b] flex gap-4 items-center cursor-pointer hover:underline underline-offset-4" onClick={() => setMainView(!mainView)}>Back to Menu</h2>
+            </>
+          )
+        }
+      </div>
 
       { mainView ?
         (

@@ -17,13 +17,17 @@ export default function Scripts() {
   const { isInput, setIsInput } = useContext(ScriptContext)
   const [scriptsStatus, setScriptsStatus] = useState<ScriptsStatus[]>([]);
 
-  useLayoutEffect(() => {
+  const fetchScriptStatusData = () => {
     fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/data/scripts_status`)
       .then((response) => response.json())
       .then((data) => {
         setScriptsStatus(data);
       })
       .catch((error) => console.error('Error fetching data:', error));
+  };
+
+  useLayoutEffect(() => {
+    fetchScriptStatusData()
   }, [isInput])
 
   useEffect(() => {
@@ -33,12 +37,7 @@ export default function Scripts() {
       const eventData = JSON.parse(event.data);
       if (eventData.script === 'tn_courts') {
         // Fetch the latest script status data when an update is received
-        fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/data/scripts_status`)
-          .then((response) => response.json())
-          .then((data) => {
-            setScriptsStatus(data);
-          })
-          .catch((error) => console.error('Error fetching data:', error));
+        fetchScriptStatusData()
       }
     });
   

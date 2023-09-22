@@ -9,7 +9,7 @@ export interface ScriptContextInterface {
 
 const defaultState = { 
     isInput: false,
-    setIsInput: (isInput: isInput) => {}
+    setIsInput: (_: isInput) => {}
 } as ScriptContextInterface
 
 export const ScriptContext = createContext<ScriptContextInterface>(defaultState)

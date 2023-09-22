@@ -60,7 +60,7 @@ export default function TnCourtsInput() {
 
         if (response.ok) {
             console.log('POST request successful');
-            setIsInput(!isInput)
+            setFormData({ ...formData, county: [] }); // to persuade user to make multiple requests 
             const updateScriptStatus = async (scriptName: string) => {
               try {
                 const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/status/${scriptName}`, {
@@ -73,6 +73,7 @@ export default function TnCourtsInput() {
                 
                 if (response.ok) {
                   console.log(`Successfully updated status for ${scriptName}`);
+                  setIsInput(!isInput)
                   //
                 } else {
                   console.error(`Failed to update status for ${scriptName}`);

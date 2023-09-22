@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextHeader from '../components/TextHeader';
 import ForeClosuresData from '../components/ForeClosuresData';
 
@@ -12,7 +12,7 @@ interface ScriptsStatus {
 
 export default function Database() {
   const [data, setData] = useState([]);
-  const [tableName, _] = useState('tnledger_foreclosures')
+  const [tableName, setTableName] = useState('')
   const [scriptsStatus, setScriptsStatus] = useState<ScriptsStatus[]>([]);
   const [mainView, setMainView] = useState(0)
 
@@ -25,16 +25,21 @@ export default function Database() {
       .catch((error) => console.error('Error fetching data:', error));
   };
   
-  useLayoutEffect(() => {
-
+  useEffect(() => {
     fetchScriptStatusData()
-    fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/data/${tableName}`)
-    .then((response) => response.json())
-    .then((data) => {
-      setData(data)
-    })
-    .catch((error) => console.error('Error fetching data:', error));
-  }, []);
+  }, [])
+
+  useEffect(() => {
+
+    if (tableName!=='') {
+      fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/data/${tableName}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data)
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+    }
+  }, [mainView]);
 
   return (
     <div className="flex flex-col h-screen app">
@@ -57,7 +62,11 @@ export default function Database() {
               <div className="relative border shadow-lg from-white via-red-50 to-cyan-100 bg-gradient-to-br w-3/4 h-64 justify-self-center flex justify-center items-center rounded-md  col-span-1 px-4 py-2 group">
                 <span className="absolute top-0 left-0 py-1 px-2 bg-primary text-white rounded-tl-md rounded-br-md font-medium">{table.script.replace(/_/g, ' ').toUpperCase()}</span>
                 <div className="text-3xl bg-primary text-white w-16 h-16 rounded-full flex justify-center items-center group-hover:animate-bounce">{ind+1}</div>
-                <div className="w-full text-center absolute bottom-0 py-1.5 px-2 bg-primary text-white rounded-br-md rounded-bl-md font-medium opacity-0 group-hover:opacity-100 duration-500 cursor-pointer" onClick={() => setMainView(ind+1)}>View</div>
+                <div className="w-full text-center absolute bottom-0 py-1.5 px-2 bg-primary text-white rounded-br-md rounded-bl-md font-medium opacity-0 group-hover:opacity-100 duration-500 cursor-pointer" onClick={() => {
+                  setMainView(ind+1)
+                  setTableName(table.script)
+                }}
+                >View</div>
               </div>
             ))}
           </div>

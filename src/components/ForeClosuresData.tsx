@@ -94,11 +94,6 @@ export default function DatabaseTable( { data, tableName }: Props ) {
                 <TableCell className="text-center">{item.address}</TableCell>
                 <TableCell className="text-center">{item.original_trustee}</TableCell>
                 <TableCell className="text-center">{item.occurrence}</TableCell>
-                {/* <TableCell className="text-right">
-                  <BadgeDelta deltaType={deltaTypes[item.status]} size="xs">
-                    {item.status}
-                  </BadgeDelta>
-                </TableCell> */}
               </TableRow>
             ))}
         </TableBody>

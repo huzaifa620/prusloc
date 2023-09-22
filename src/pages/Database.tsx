@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from 'react';
 import TextHeader from '../components/TextHeader';
-import DatabaseTable from '../components/DatabaseTable';
+import ForeClosuresData from '../components/ForeClosuresData';
 
 interface ScriptsStatus {
   completion_date_and_time: string;
@@ -66,7 +66,7 @@ export default function Database() {
         (
 
           <div className="p-4 h-full">
-            <DatabaseTable data={data} tableName={tableName} />
+            <ForeClosuresData data={data} tableName={tableName} />
           </div>
 
         )

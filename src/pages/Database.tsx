@@ -39,7 +39,8 @@ export default function Database() {
       })
       .catch((error) => console.error('Error fetching data:', error));
     }
-  }, [mainView]);
+  }, [tableName]);
+
 
   return (
     <div className="flex flex-col h-screen app">
@@ -49,7 +50,10 @@ export default function Database() {
           mainView !== 0 && (
             <>
               <h2 className="font-bold text-xl ml-4 text-[#30415b] flex gap-4 items-center"> {` > `}</h2>
-              <h2 className="font-bold text-xl ml-4 text-[#30415b] flex gap-4 items-center cursor-pointer hover:underline underline-offset-4" onClick={() => setMainView(0)}>Back to Menu</h2>
+              <h2 className="font-bold text-xl ml-4 text-[#30415b] flex gap-4 items-center cursor-pointer hover:underline underline-offset-4" onClick={() => {
+                setMainView(0)
+                setData([])
+              }}>Back to Menu</h2>
             </>
           )
         }
@@ -63,8 +67,8 @@ export default function Database() {
                 <span className="absolute top-0 left-0 py-1 px-2 bg-primary text-white rounded-tl-md rounded-br-md font-medium">{table.script.replace(/_/g, ' ').toUpperCase()}</span>
                 <div className="text-3xl bg-primary text-white w-16 h-16 rounded-full flex justify-center items-center group-hover:animate-bounce">{ind+1}</div>
                 <div className="w-full text-center absolute bottom-0 py-1.5 px-2 bg-primary text-white rounded-br-md rounded-bl-md font-medium opacity-0 group-hover:opacity-100 duration-500 cursor-pointer" onClick={() => {
-                  setMainView(ind+1)
                   setTableName(table.script)
+                  setMainView(ind+1)
                 }}
                 >View</div>
               </div>

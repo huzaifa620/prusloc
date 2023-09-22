@@ -44,6 +44,7 @@ export default function ForeclosureInput({ route }: { route: string }) {
                 calendarClassName="bg-white shadow-2xl border border-black"
                 locale="en-GB"
                 required
+                maxDate={new Date()}
                 filterDate={isPastFriday}
                 className="border border-black rounded-xl py-2 px-4 shadow-lg w-[240px]"
             />

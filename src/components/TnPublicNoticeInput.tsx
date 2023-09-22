@@ -77,13 +77,102 @@ export default function TnPublicNoticeInput() {
     };
 
     const court_names = {
-        mon: 'Montgomery',
-        rut: 'Rutherford',
-        rob: 'Robertson',
-        sum: 'Sumner',
-        will: 'Williamson',
-        wil: 'Wilson',
-    };
+        Anderson: 'Anderson',
+        Bedford: 'Bedford',
+        Benton: 'Benton',
+        Bledsoe: 'Bledsoe',
+        Blount: 'Blount',
+        Bradley: 'Bradley',
+        Campbell: 'Campbell',
+        Cannon: 'Cannon',
+        Carroll: 'Carroll',
+        Carter: 'Carter',
+        Cheatham: 'Cheatham',
+        Chester: 'Chester',
+        Claiborne: 'Claiborne',
+        Clay: 'Clay',
+        Cocke: 'Cocke',
+        Coffee: 'Coffee',
+        Crockett: 'Crockett',
+        Cumberland: 'Cumberland',
+        Davidson: 'Davidson',
+        Decatur: 'Decatur',
+        DeKalb: 'DeKalb',
+        Dickson: 'Dickson',
+        Dyer: 'Dyer',
+        Fayette: 'Fayette',
+        Fentress: 'Fentress',
+        Franklin: 'Franklin',
+        Gibson: 'Gibson',
+        Giles: 'Giles',
+        Grainger: 'Grainger',
+        Greene: 'Greene',
+        Grundy: 'Grundy',
+        Hamblen: 'Hamblen',
+        Hamilton: 'Hamilton',
+        Hancock: 'Hancock',
+        Hardeman: 'Hardeman',
+        Hardin: 'Hardin',
+        Hawkins: 'Hawkins',
+        Haywood: 'Haywood',
+        Henderson: 'Henderson',
+        Henry: 'Henry',
+        Hickman: 'Hickman',
+        Houston: 'Houston',
+        Humphreys: 'Humphreys',
+        Jackson: 'Jackson',
+        Jefferson: 'Jefferson',
+        Johnson: 'Johnson',
+        Knox: 'Knox',
+        Lake: 'Lake',
+        Lauderdale: 'Lauderdale',
+        Lawrence: 'Lawrence',
+        Lewis: 'Lewis',
+        Lincoln: 'Lincoln',
+        Loudon: 'Loudon',
+        Macon: 'Macon',
+        Madison: 'Madison',
+        Marion: 'Marion',
+        Marshall: 'Marshall',
+        Maury: 'Maury',
+        McMinn: 'McMinn',
+        McNairy: 'McNairy',
+        Meigs: 'Meigs',
+        Monroe: 'Monroe',
+        Montgomery: 'Montgomery',
+        Moore: 'Moore',
+        Morgan: 'Morgan',
+        Obion: 'Obion',
+        Overton: 'Overton',
+        Perry: 'Perry',
+        Pickett: 'Pickett',
+        Polk: 'Polk',
+        Putnam: 'Putnam',
+        Rhea: 'Rhea',
+        Roane: 'Roane',
+        Robertson: 'Robertson',
+        Rutherford: 'Rutherford',
+        Scott: 'Scott',
+        Sequatchie: 'Sequatchie',
+        Sevier: 'Sevier',
+        Shelby: 'Shelby',
+        Smith: 'Smith',
+        Stewart: 'Stewart',
+        Sullivan: 'Sullivan',
+        Sumner: 'Sumner',
+        Tipton: 'Tipton',
+        Trousdale: 'Trousdale',
+        Unicoi: 'Unicoi',
+        Union: 'Union',
+        'Van Buren': 'Van Buren',
+        Warren: 'Warren',
+        Washington: 'Washington',
+        Wayne: 'Wayne',
+        Weakley: 'Weakley',
+        White: 'White',
+        Williamson: 'Williamson',
+        Wilson: 'Wilson',
+    };      
 
     return (
         <div className="p-10">
@@ -112,6 +201,7 @@ export default function TnPublicNoticeInput() {
                         dateFormat="MM/dd/yyyy"
                         isClearable
                         locale="en-GB"
+                        maxDate={new Date()}
                         className="border border-black rounded-lg py-2 px-4 w-full shadow-lg"
                         required
                     />
@@ -124,6 +214,7 @@ export default function TnPublicNoticeInput() {
                         dateFormat="MM/dd/yyyy"
                         isClearable
                         locale="en-GB"
+                        maxDate={new Date()}
                         className="border border-black rounded-lg py-2 px-4 w-full shadow-lg"
                         required
                     />

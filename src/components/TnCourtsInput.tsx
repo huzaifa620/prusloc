@@ -158,6 +158,7 @@ export default function TnCourtsInput() {
                 dateFormat="MM/dd/yyyy"
                 isClearable
                 locale="en-GB"
+                maxDate={new Date()}
                 className="border border-black rounded-lg py-2 px-4 w-full shadow-lg"
                 required
               />
@@ -170,6 +171,7 @@ export default function TnCourtsInput() {
                 dateFormat="MM/dd/yyyy"
                 isClearable
                 locale="en-GB"
+                maxDate={new Date()}
                 className="border border-black rounded-lg py-2 px-4 w-full shadow-lg"
                 required
               />

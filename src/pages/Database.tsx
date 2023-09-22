@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import TextHeader from '../components/TextHeader';
 import ForeClosuresData from '../components/ForeClosuresData';
+import TnCourtsData from '../components/TnCourtsData';
 
 interface ScriptsStatus {
   completion_date_and_time: string;
@@ -41,6 +42,9 @@ export default function Database() {
     }
   }, [tableName]);
 
+  useEffect(() => {
+    console.log(data)
+  }, [data])
 
   return (
     <div className="flex flex-col h-screen app">
@@ -79,7 +83,9 @@ export default function Database() {
         (
           
           mainView === 1 ? (
-            <></>
+            <div className="p-4 h-full">
+              <TnCourtsData data={data} tableName={tableName} />
+            </div>
           )
           :
           (

@@ -48,14 +48,14 @@ export default function TnCourtsInput() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Form Data:', formData);
+    console.log('Form Data:', {...formData, from: formData.from?.toLocaleDateString('en-US'), to: formData.to?.toLocaleDateString('en-US')});
     try {
         const response = await fetch(`${import.meta.env.VITE_API_FLASK_BASE_URL}/script/tn_courts`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({...formData, from: formData.from?.toLocaleDateString('en-US'), to: formData.to?.toLocaleDateString('en-US')}),
         });
 
         if (response.ok) {

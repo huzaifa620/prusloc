@@ -1,7 +1,8 @@
 import { useState, useLayoutEffect, useEffect, useContext } from "react";
 import TextHeader from "../components/TextHeader";
-// import ForeclosureInput from "../components/ForeclosureInput"
+import ForeclosureInput from "../components/ForeclosureInput"
 import TnCourtsInput from "../components/TnCourtsInput"
+import TnPublicNoticeInput from "../components/TnPublicNoticeInput"
 import  { ScriptContext } from "../contexts/Context";
 
 interface ScriptsStatus {
@@ -16,6 +17,7 @@ export default function Scripts() {
 
   const { isInput, setIsInput } = useContext(ScriptContext)
   const [scriptsStatus, setScriptsStatus] = useState<ScriptsStatus[]>([]);
+  const [selectedScript, setSelectedScript] = useState<string>('')
 
   const fetchScriptStatusData = () => {
     fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/data/scripts_status`)
@@ -25,6 +27,10 @@ export default function Scripts() {
       })
       .catch((error) => console.error('Error fetching data:', error));
   };
+
+  useEffect(() => {
+    console.log(scriptsStatus)
+  }, [scriptsStatus])
 
   useLayoutEffect(() => {
     fetchScriptStatusData()
@@ -83,18 +89,27 @@ export default function Scripts() {
                 <td className="px-6 py-4">
                   <button
                     disabled={script.status === 'running'}
-                    className={`px-4 py-2 bg-primary text-white rounded hover:bg-opacity-90 ${(script.status === 'running') && 'opacity-70 cursor-not-allowed'}`}
-                    onClick={() => setIsInput(!isInput)}
+                    className={`bg-primary text-white rounded relative hover:bg-opacity-90 ${(script.status === 'running') && 'opacity-70 cursor-not-allowed'}`}
+                    onClick={() => {
+                      setIsInput(!isInput);
+                      setSelectedScript(script.script);
+                    }}
                   >
                     {(script.status === 'running') ? (
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2 px-4 py-2">
                         <div className="w-4 h-4 border-t-2 border-r-2 border-blue-500 rounded-full animate-spin"></div>
                         <span>Running...</span>
                       </div>
                     ) : (
-                      'Run Script'
+                      <div className="flex items-center space-x-2 hover:translate-x-3 duration-500 px-4 py-2">
+                        <span>Run Script</span>
+                        <span className="text-xl">
+                          ▶️
+                        </span>
+                      </div>
                     )}
                   </button>
+
                 </td>
 
               </tr>
@@ -116,10 +131,22 @@ export default function Scripts() {
             </div>
             <div className="bg-white shadow-2xl p-4 rounded-2xl flex items-center justify-center w-full h-full">
               <div className="w-full h-full overflow-y-auto">
-                <div className="flex flex-col items-center justify-cente space-y-2 h-full w-full">
-                  <TnCourtsInput />
-                  {/* <ForeclosureInput /> */}
+
+                <div className="flex flex-col items-center justify-center space-y-2 h-full w-full">
+
+                  { selectedScript === 'tn_courts' ? (
+                      <TnCourtsInput />
+                    ) : selectedScript === 'tnledger_foreclosures' || selectedScript === 'tnledger_courts' ? (
+                      <ForeclosureInput route={selectedScript} />
+                    ) : selectedScript === 'tn_public_notice_probate_notice' ? (
+                      <TnPublicNoticeInput />
+                    ) : (
+                      null 
+                    )
+                  }
+
                 </div>
+
               </div>
             </div>
           </div>

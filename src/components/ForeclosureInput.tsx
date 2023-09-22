@@ -6,14 +6,14 @@ function isPastFriday(date: Date) {
     return date.getDay() === 5 && date < new Date();
 }
 
-export default function ForeclosureInput() {
+export default function ForeclosureInput({ route }: { route: string }) {
 
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date(new Date().setDate(new Date().getDate() - (new Date().getDay() + 2) % 7)));
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('Form Data:', selectedDate);
+        console.log('Form Data:', { date: new Date(selectedDate || '').toLocaleDateString('en-US') });
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_FLASK_BASE_URL}/script/tnledger_foreclosures`, {
+            const response = await fetch(`${import.meta.env.VITE_API_FLASK_BASE_URL}/script/${route}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

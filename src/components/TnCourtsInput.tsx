@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import  { ScriptContext } from "../contexts/Context";
 
 interface FormData {
   county: string[];
@@ -13,12 +14,8 @@ interface FormData {
 
 export default function TnCourtsInput() {
 
-  const [status, _] = useState<boolean>(false);
+  const { isInput, setIsInput } = useContext(ScriptContext)
   
-  useEffect(()=> {
-    console.log(status)
-  }, [status])
-
   const [formData, setFormData] = useState<FormData>({
     county: [],
     mode: 'General Session',
@@ -63,7 +60,7 @@ export default function TnCourtsInput() {
 
         if (response.ok) {
             console.log('POST request successful');
-            //setStatus(true)
+            setIsInput(!isInput)
             const updateScriptStatus = async (scriptName: string) => {
               try {
                 const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/status/${scriptName}`, {
@@ -76,6 +73,7 @@ export default function TnCourtsInput() {
                 
                 if (response.ok) {
                   console.log(`Successfully updated status for ${scriptName}`);
+                  //
                 } else {
                   console.error(`Failed to update status for ${scriptName}`);
                 }
@@ -87,7 +85,6 @@ export default function TnCourtsInput() {
             updateScriptStatus('tn_courts');            
             
         } else {
-            // Request failed
             console.error('POST request failed');
         }
     } catch (error) {
@@ -204,8 +201,8 @@ export default function TnCourtsInput() {
           </div>
         </div>
         <div className="flex flex-col space-y-2 pt-4 shadow-xl rounded-3xl w-1/2 justify-center">
-          <button type='submit' disabled={formData.county.length==0 || status} className="px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded cursor-pointer">
-            { !status ? 'Confirm': 'Running...'}
+          <button type='submit' disabled={formData.county.length==0} className={`px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded ${formData.county.length==0 ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+            Confirm
           </button>
         </div>
       </form>

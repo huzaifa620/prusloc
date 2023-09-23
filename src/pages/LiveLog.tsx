@@ -17,8 +17,8 @@ function LiveLog() {
   }, []);
 
   return (
-    <div className="app flex flex-col">
-      <TextHeader title="Default Inputs"/>
+    <div className="app flex flex-col h-full">
+      <TextHeader title="Live Logs"/>
       <div className="flex flex-col p-4 space-y-4">
         <h1>Live Log:</h1>
         <textarea

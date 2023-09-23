@@ -7,5 +7,5 @@ export const links = [
     {title:'Dashboard',href:'/',icon:<LuLayoutDashboard/>},
     {title:'Scripts',href:'/scripts',icon:<TbScript/>,value:2},
     {title:'Database',href:'/database',icon:<AiOutlineDatabase/>,value:1},
-    {title:'Default Inputs',href:'/default-inputs',icon:<MdOutlineSettingsInputComponent/>,value:3}
+    {title:'Live Logs',href:'/live-logs',icon:<MdOutlineSettingsInputComponent/>,value:3}
 ]

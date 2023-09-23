@@ -10,7 +10,7 @@ import SignUp from "../pages/SignUp";
 import Home from "../pages/Home";
 import Scripts from "../pages/Scripts";
 import Database from "../pages/Database";
-import DefaultInputs from "../pages/DefaultInputs";
+import LiveLog from "../pages/LiveLog";
 
 const AppLayout = ()=>{
   return(
@@ -28,14 +28,14 @@ const AppLayout = ()=>{
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-    <Route path="/sign-in" element={<SignIn />}/>
-    <Route path="/sign-up" element={<SignUp />} />
-    <Route path="/*" element={<AppLayout/>}>
-      <Route index element={<Home/>}/>
-      <Route path="scripts" element={<Scripts/>}/>
-      <Route path="database" element={<Database/>}/>
-      <Route path="default-inputs" element={<DefaultInputs/>}/>
-    </Route>
+      <Route path="/sign-in" element={<SignIn />}/>
+      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/*" element={<AppLayout />}>
+        <Route index element={<Home />}/>
+        <Route path="scripts" element={<Scripts />}/>
+        <Route path="database" element={<Database />}/>
+        <Route path="live-logs" element={<LiveLog />}/>
+      </Route>
     </>
   )
 );

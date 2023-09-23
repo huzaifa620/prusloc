@@ -1,45 +1,67 @@
-"use client";
-
-import { Icon,Table,TableRow, TableCell, TableHead, TableHeaderCell,TableBody, Title, Flex, Select, SelectItem, MultiSelect, MultiSelectItem } from "@tremor/react";
+import React, { useState, useEffect } from "react";
+import {
+  Icon,
+  Table,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+  TableBody,
+  Title,
+  Flex,
+  Select,
+  SelectItem,
+  MultiSelect,
+  MultiSelectItem,
+} from "@tremor/react";
 import { InformationCircleIcon } from "@heroicons/react/solid";
-import { useState, useEffect } from "react";
 
 export type Foreclosure = {
-    date_ran: string;
-    tdn_no: string;
-    url: string;
-    borrower: string;
-    address: string;
-    original_trustee: string;
-    occurrence: string;
+  date_ran: string;
+  tdn_no: string;
+  url: string;
+  borrower: string;
+  address: string;
+  original_trustee: string;
+  occurrence: number;
 };
 
 type Props = {
-    data: Foreclosure[];
-    tableName: String;
-}
+  data: Foreclosure[];
+  tableName: String;
+};
 
-export default function ForeClosuresData( { data, tableName }: Props ) {
-
-    const [tableHeader, setTableHeader] = useState<string[]>([])
-    const [selectedDate, setSelectedDate] = useState("all");
-    const [selectedTdnNo, setSelectedTdnNo] = useState<string[]>([]);
+export default function ForeClosuresData({ data, tableName }: Props) {
+  const [tableHeader, setTableHeader] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState("all");
+  const [selectedTdnNo, setSelectedTdnNo] = useState<string[]>([]);
+  const [selectedOccurrence, setSelectedOccurrence] = useState<number>(0);
 
   useEffect(() => {
     if (data && data.length > 0) {
       setTableHeader(Object.keys(data[0]));
     }
-  }, [data, selectedDate, selectedTdnNo]);
+  }, [data, selectedDate, selectedTdnNo, selectedOccurrence]);
+
+  const isForeclosureSelected = (foreclosures: Foreclosure) => {
+    const isDateSelected =
+      selectedDate === "all" || foreclosures.date_ran.split("T")[0] === selectedDate;
   
-  const isForeclosureSelected = (foreclosures: Foreclosure) =>
-    (foreclosures.date_ran.split('T')[0] === selectedDate || selectedDate === "all") &&
-    (selectedTdnNo.includes(foreclosures.tdn_no) || selectedTdnNo.length === 0);
+    const isTdnNoSelected =
+      selectedTdnNo.length === 0 || selectedTdnNo.includes(foreclosures.tdn_no);
+  
+    const isOccurrenceSelected =
+      selectedOccurrence === 0 || foreclosures.occurrence === selectedOccurrence;
+  
+    return isDateSelected && isTdnNoSelected && isOccurrenceSelected;
+  };
+  
 
   return (
     <div className="bg-white p-8 h-full rounded-3xl border shadow-2xl">
       <div>
         <Flex className="space-x-0.5" justifyContent="start" alignItems="center">
-          <Title className="uppercase"> { tableName.replace('_', ' ') } </Title>
+          <Title className="uppercase"> {tableName.replace("_", " ")} </Title>
           <Icon
             icon={InformationCircleIcon}
             variant="simple"
@@ -59,27 +81,41 @@ export default function ForeClosuresData( { data, tableName }: Props ) {
             </MultiSelectItem>
           ))}
         </MultiSelect>
-        
-        <Select className="max-w-full sm:max-w-xs" onValueChange={setSelectedDate} placeholder="Select Date...">
-            {[...new Set(data.map((item) => item.date_ran.split('T')[0]))].map((date) => (
-                <SelectItem key={date} value={date}>
-                    {date}
-                </SelectItem>
-            ))}
+
+        <Select
+          className="max-w-full sm:max-w-xs"
+          onValueChange={(value) => setSelectedDate(value)}
+          placeholder="Select Date..."
+        >
+          {[...new Set(data.map((item) => item.date_ran.split("T")[0]))].map((date) => (
+            <SelectItem key={date} value={date}>
+              {date}
+            </SelectItem>
+          ))}
         </Select>
 
+        <Select
+          className="max-w-full sm:max-w-xs"
+          onValueChange={(value) => setSelectedOccurrence(parseInt(value))}
+          placeholder="Select Occurrence..."
+        >
+          {[...new Set(data.map((item) => item.occurrence))].map((occurrence) => (
+            <SelectItem key={occurrence} value={occurrence.toString()}>
+              {occurrence}
+            </SelectItem>
+          ))}
+        </Select>
       </div>
 
       <Table className="mt-4 h-[85%] 2xl:h-[90%] border rounded-xl">
-
         <TableHead className="bg-primary">
-            <TableRow>
-                {tableHeader.map((item, index) => (
-                    <TableHeaderCell key={index} className={`uppercase text-white text-center ${index === 0 ? '' : ''}`}>
-                        {item.replace('_', ' ')}
-                    </TableHeaderCell>
-                ))}
-            </TableRow>
+          <TableRow>
+            {tableHeader.map((item, index) => (
+              <TableHeaderCell key={index} className={`uppercase text-white text-center ${index === 0 ? "" : ""}`}>
+                {item.replace("_", " ")}
+              </TableHeaderCell>
+            ))}
+          </TableRow>
         </TableHead>
 
         <TableBody className="font-semibold text-tremor-content-emphasis">
@@ -87,7 +123,7 @@ export default function ForeClosuresData( { data, tableName }: Props ) {
             .filter((item) => isForeclosureSelected(item))
             .map((item, index) => (
               <TableRow key={index}>
-                <TableCell>{item.date_ran.split('T')[0]}</TableCell>
+                <TableCell>{item.date_ran.split("T")[0]}</TableCell>
                 <TableCell className="text-center">{item.tdn_no}</TableCell>
                 <TableCell className="text-center">{item.url}</TableCell>
                 <TableCell className="text-center">{item.borrower}</TableCell>
@@ -97,7 +133,6 @@ export default function ForeClosuresData( { data, tableName }: Props ) {
               </TableRow>
             ))}
         </TableBody>
-        
       </Table>
     </div>
   );

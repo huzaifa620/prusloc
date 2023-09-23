@@ -1,12 +1,6 @@
-import {
-    createBrowserRouter,
-    createRoutesFromElements,
-    Route,
-    Outlet,
-  } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Route, Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import SignIn from "../pages/SignIn";
-import SignUp from "../pages/SignUp";
 import Home from "../pages/Home";
 import Scripts from "../pages/Scripts";
 import Database from "../pages/Database";
@@ -29,7 +23,6 @@ export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/sign-in" element={<SignIn />}/>
-      <Route path="/sign-up" element={<SignUp />} />
       <Route path="/*" element={<AppLayout />}>
         <Route index element={<Home />}/>
         <Route path="scripts" element={<Scripts />}/>

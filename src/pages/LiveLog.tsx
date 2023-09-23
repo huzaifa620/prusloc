@@ -54,12 +54,11 @@ function LiveLog() {
     <div className="app flex flex-col">
       <TextHeader title="Live Logs" />
       <div className="flex flex-col p-4 space-y-4">
-        <h1>Live Log:</h1>
         <div className="flex space-x-4">
           {tabs.map((tab, index) => (
             <button
               key={index}
-              className={`py-2 px-4 border rounded-md ${activeTab === index ? 'bg-primary text-white' : 'bg-gray-200'}`}
+              className={`py-2 px-4 border rounded-md ${activeTab === index ? 'bg-primary text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
               onClick={() => handleTabClick(index)}
             >
               {tab.label}

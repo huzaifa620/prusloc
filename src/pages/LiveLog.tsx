@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import TextHeader from '../components/TextHeader';
 
 function LiveLog() {
   const [logData, setLogData] = useState('');
@@ -51,6 +52,7 @@ function LiveLog() {
 
   return (
     <div className="app flex flex-col">
+      <TextHeader title="Live Logs" />
       <div className="flex flex-col p-4 space-y-4">
         <h1>Live Log:</h1>
         <div className="flex space-x-4">

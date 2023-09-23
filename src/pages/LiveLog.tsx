@@ -39,7 +39,7 @@ function LiveLog() {
       <div className="flex flex-col p-4 space-y-4">
         <h1>Live Log:</h1>
         <textarea
-          className="w-full p-4 rounded-2xl border"
+          className="w-full py-4 px-8 rounded-2xl border text-justify"
           value={logData}
           rows={30}
           readOnly

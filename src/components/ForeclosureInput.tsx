@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import  { ScriptContext } from "../contexts/Context";
 
 function isPastFriday(date: Date) {
     return date.getDay() === 5 && date < new Date();
@@ -8,6 +9,7 @@ function isPastFriday(date: Date) {
 
 export default function ForeclosureInput({ route }: { route: string }) {
 
+    const { isInput, setIsInput } = useContext(ScriptContext)
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date(new Date().setDate(new Date().getDate() - (new Date().getDay() + 2) % 7)));
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -24,12 +26,38 @@ export default function ForeclosureInput({ route }: { route: string }) {
             if (response.ok) {
                 // Request was successful
                 console.log('POST request successful');
+                setSelectedDate(null) // to persuade user to make multiple requests 
+
+                const updateScriptStatus = async (scriptName: string) => {
+                    try {
+                      const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/status/${scriptName}`, {
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({}),
+                      });
+                      
+                      if (response.ok) {
+                        console.log(`Successfully updated status for ${scriptName}`);
+                        setIsInput(!isInput)
+                        //
+                      } else {
+                        console.error(`Failed to update status for ${scriptName}`);
+                      }
+                    } catch (error) {
+                      console.error('Error:', error);
+                    }
+                  };
+                  
+                  updateScriptStatus(route);
+
             } else {
                 // Request failed
-                console.error('POST request failed');
+                console.log('POST request failed');
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.log('Error:', error);
         }
     };
 
@@ -57,7 +85,7 @@ export default function ForeclosureInput({ route }: { route: string }) {
                 *Note: Only Fridays are allowed
             </p>
             <div className="flex flex-col space-y-2 pt-4 shadow-xl rounded-3xl w-1/2 justify-center">
-                <button type='submit' className="px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded">
+                <button type='submit' disabled={selectedDate === null} className={`px-4 py-2 bg-primary text-white hover:bg-opacity-90 rounded ${selectedDate === null ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
                     Confirm
                 </button>
             </div>

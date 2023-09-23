@@ -86,10 +86,10 @@ export default function TnCourtsInput() {
             updateScriptStatus('tn_courts');            
             
         } else {
-            console.error('POST request failed');
+            console.log('POST request failed');
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.log('Error:', error);
     }
 };
 

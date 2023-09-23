@@ -61,7 +61,7 @@ export default function ForeClosuresData( { data, tableName }: Props ) {
         </MultiSelect>
         
         <Select className="max-w-full sm:max-w-xs" onValueChange={setSelectedDate} placeholder="Select Date...">
-            {[...new Set(data.map((item) => item.date_ran))].map((date) => (
+            {[...new Set(data.map((item) => item.date_ran.split('T')[0]))].map((date) => (
                 <SelectItem key={date} value={date}>
                     {date}
                 </SelectItem>

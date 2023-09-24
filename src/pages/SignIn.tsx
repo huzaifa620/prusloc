@@ -1,6 +1,5 @@
 import { BiLockAlt } from 'react-icons/bi';
-import { useState, useContext } from 'react';
-//import  { UserContext } from "../contexts/UserContext";
+import { useState } from 'react';
 
 interface FormValues {
   [key: string]: string;
@@ -12,6 +11,7 @@ export default function SignIn() {
 
   const [values, setValues] = useState<FormValues>(initialValue);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false)
 
   const info = {
     heading: 'Sign In',
@@ -24,6 +24,7 @@ export default function SignIn() {
 
   async function handleSignIn() {
     try {
+      setLoading(true)
       const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/signin`, {
         method: 'POST',
         headers: {
@@ -39,7 +40,7 @@ export default function SignIn() {
         // Store the token in localStorage
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
-
+        
         //setUser(foundUser)
         window.location.href = '/';
       } else {
@@ -85,7 +86,20 @@ export default function SignIn() {
             className="w-80 bg-primary text-white py-3 text-lg hover:bg-opacity-90 font-medium rounded-md"
             onClick={handleSignIn}
           >
-            {info.buttonText}
+            {
+              loading ? (
+                <div className="flex items-center justify-center space-x-2 px-4 py-2">
+                  <div className="w-4 h-4 border-t-2 border-r-2 border-blue-500 rounded-full animate-spin"></div>
+                  <span>Checking...</span>
+                </div>
+              )
+              :
+              (
+                <div>
+                  {info.buttonText}
+                </div>
+              )
+            }
           </button>
         </div>
       </div>

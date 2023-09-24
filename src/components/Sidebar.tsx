@@ -1,11 +1,10 @@
 import { links } from "../data/SidebarLinks";
-import { useContext, useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { Link, useLocation } from "react-router-dom";
-//import  { UserContext } from "../contexts/UserContext";
 
 export default function Sidebar() {
+
   const { pathname } = useLocation();
-  //const { user } = useContext(UserContext)
   const [userName, setUserName] = useState<string>('')
 
   useLayoutEffect(() => {

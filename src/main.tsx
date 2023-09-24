@@ -3,14 +3,11 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import ScriptProvider from './contexts/Context.tsx'
-import UserProvider from './contexts/UserContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <UserProvider>
-      <ScriptProvider>
-        <App />
-      </ScriptProvider>
-    </UserProvider>
+    <ScriptProvider>
+      <App />
+    </ScriptProvider>
   </React.StrictMode>,
 )

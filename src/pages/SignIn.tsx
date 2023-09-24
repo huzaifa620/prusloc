@@ -31,9 +31,14 @@ export default function SignIn() {
       });
 
       if (response.ok) {
-        // Sign-in successful, you can redirect the user to a different page or perform any other actions
-        console.log('Sign-in successful');
-        setError('');
+        const data = await response.json();
+        const { token } = data;
+
+        // Store the token in localStorage
+        localStorage.setItem('token', token);
+
+        // Redirect to the homepage (or any other page you want)
+        window.location.href = '/'; // You can use React Router for better routing
       } else {
         // Sign-in failed, display an error message
         const data = await response.json();
@@ -45,7 +50,7 @@ export default function SignIn() {
     }
   }
 
-  function handleValues(e: any) {
+  function handleValues(e: React.ChangeEvent<HTMLInputElement>) {
     setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 

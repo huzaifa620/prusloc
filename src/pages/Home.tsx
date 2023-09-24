@@ -1,11 +1,24 @@
-import React, { useState, useEffect } from 'react';
+"use client";
+
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TextHeader from '../components/TextHeader';
 import { links } from '../data/SidebarLinks';
+import { Table,TableRow, TableCell, TableHead, TableHeaderCell,TableBody } from "@tremor/react";
+import { UserAddIcon } from "@heroicons/react/solid";
+
+
+export type Users = {
+  id: number;
+  username: string;
+  password: string;
+  tasks: string
+};
 
 export default function Home() {
-  const [users, setUsers] = useState([]);
 
+  const [users, setUsers] = useState<Users[]>([]);
+  
   useEffect(() => {
     async function fetchUsers() {
       try {
@@ -47,7 +60,9 @@ export default function Home() {
 
   return (
     <div className="w-full app">
+
       <TextHeader title="Dashboard" />
+
       <div className="grid grid-cols-3 w-full mt-8 text-primary">
         {links.slice(1).map((el) => (
           <div
@@ -70,32 +85,53 @@ export default function Home() {
         ))}
       </div>
 
-      {/* <div className="mt-8">
-        <h2 className="text-2xl font-semibold text-primary">User List</h2>
-        <table className="mt-4 w-full">
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>Tasks</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.username}</td>
-                <td>{user.tasks}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-8 items-center justify-between w-full px-8">
 
-      <button
-        onClick={createUser}
-        className="mt-8 w-40 bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark"
-      >
-        Create User
-      </button> */}
+        <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 w-3/5">
+
+          {/* <Select className="max-w-full sm:max-w-xs" onValueChange={setSelectedDate} placeholder="Select Date...">
+              {[...new Set(data.map((item) => item.date_ran))].map((date) => (
+                  <SelectItem key={date} value={date}>
+                      {date}
+                  </SelectItem>
+              ))}
+          </Select> */}
+
+        </div>
+
+        <button
+          className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark hover:bg-opacity-90 flex items-center justify-center space-x-2 group"
+          onClick={createUser}
+        >
+          <UserAddIcon className="h-8 w-8 transform group-hover:animate-pulse " />
+          <p>Create User</p>
+        </button>
+
+      </div>
+      
+      <Table className="mt-4 h-[85%] 2xl:h-[60%] border rounded-xl bg-white shadow-2xl">
+
+        <TableHead className="bg-primary">
+            <TableRow>
+              <TableHeaderCell className={`uppercase text-white text-center`}>
+                Username
+              </TableHeaderCell>
+              <TableHeaderCell className={`uppercase text-white text-center`}>
+                Tasks
+              </TableHeaderCell>
+            </TableRow>
+        </TableHead>
+
+        <TableBody className="font-semibold text-tremor-content-emphasis">
+          {users.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell className="text-center">{item.username}</TableCell>
+                <TableCell className="text-center">{item.tasks}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+        
+      </Table>
 
     </div>
   );

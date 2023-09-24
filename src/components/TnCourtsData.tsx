@@ -80,16 +80,16 @@ export default function TnCourtsData( { data, tableName }: Props ) {
       <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 items-center justify-between w-full">
 
         <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 w-3/5">
-        <MultiSelect
-          className="max-w-full sm:max-w-xs"
-          onValueChange={setSelectedCaseType}
-          placeholder="Select Case Type..."
-          >
-          {[...new Set(data.map((item) => item.case_type))].map((caseType) => (
-              <MultiSelectItem key={caseType} value={caseType}>
-              {caseType}
-              </MultiSelectItem>
-          ))}
+          <MultiSelect
+            className="max-w-full sm:max-w-xs"
+            onValueChange={setSelectedCaseType}
+            placeholder="Select Case Type..."
+            >
+            {[...new Set(data.map((item) => item.case_type))].map((caseType) => (
+                <MultiSelectItem key={caseType} value={caseType}>
+                {caseType}
+                </MultiSelectItem>
+            ))}
           </MultiSelect>
 
           
@@ -103,10 +103,7 @@ export default function TnCourtsData( { data, tableName }: Props ) {
 
         </div>
 
-        <button
-          className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark hover:bg-opacity-90 flex items-center justify-center space-x-2 group"
-          onClick={exportToCSV}
-        >
+        <button className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark hover:bg-opacity-90 flex items-center justify-center space-x-2 group" onClick={exportToCSV}>
           <p>Export CSV</p>
           <ArrowCircleDownIcon className="h-8 w-8 transform group-hover:animate-bounce" />
         </button>
@@ -144,6 +141,7 @@ export default function TnCourtsData( { data, tableName }: Props ) {
         </TableBody>
         
       </Table>
+
     </div>
   );
 }

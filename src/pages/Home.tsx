@@ -118,9 +118,9 @@ export default function Home() {
         </div>
 
         <button
-          className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark hover:bg-opacity-90 flex items-center justify-center space-x-2 group"
+          className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark flex items-center justify-center space-x-2 group"
           onClick={() => setIsInput(!isInput)} >
-            <UserAddIcon className="h-8 w-8 transform group-hover:animate-pulse " />
+            <UserAddIcon className="h-8 w-8 transform group-hover:animate-pulse" />
             <p>Create User</p>
         </button>
 

@@ -37,19 +37,17 @@ export default function SignIn() {
         const data = await response.json();
         const { token, username } = data;
 
-        // Store the token in localStorage
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
-        
-        //setUser(foundUser)
         window.location.href = '/';
       } else {
-        // Sign-in failed, display an error message
+        setLoading(false)
         const data = await response.json();
         setError(data.error);
       }
     } catch (error) {
-      console.error('Error during sign-in:', error);
+      setLoading(false)
+      console.log('Error during sign-in:', error);
       setError('An error occurred while signing in');
     }
   }

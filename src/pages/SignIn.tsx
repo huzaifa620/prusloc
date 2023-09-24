@@ -1,5 +1,6 @@
 import { BiLockAlt } from 'react-icons/bi';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+//import  { UserContext } from "../contexts/UserContext";
 
 interface FormValues {
   [key: string]: string;
@@ -8,6 +9,7 @@ interface FormValues {
 const initialValue = { username: '', password: '' };
 
 export default function SignIn() {
+
   const [values, setValues] = useState<FormValues>(initialValue);
   const [error, setError] = useState('');
 
@@ -32,13 +34,14 @@ export default function SignIn() {
 
       if (response.ok) {
         const data = await response.json();
-        const { token } = data;
+        const { token, username } = data;
 
         // Store the token in localStorage
         localStorage.setItem('token', token);
+        localStorage.setItem('username', username);
 
-        // Redirect to the homepage (or any other page you want)
-        window.location.href = '/'; // You can use React Router for better routing
+        //setUser(foundUser)
+        window.location.href = '/';
       } else {
         // Sign-in failed, display an error message
         const data = await response.json();
@@ -79,7 +82,7 @@ export default function SignIn() {
         {error && <div className="text-red-500 text-center font-bold tracking-widest">{error}</div>}
         <div>
           <button
-            className="w-80 bg-primary text-white py-3 text-lg font-medium rounded-md"
+            className="w-80 bg-primary text-white py-3 text-lg hover:bg-opacity-90 font-medium rounded-md"
             onClick={handleSignIn}
           >
             {info.buttonText}

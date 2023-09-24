@@ -1,4 +1,3 @@
-
 import { createBrowserRouter, createRoutesFromElements, Route, Outlet, Navigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import SignIn from "../pages/SignIn";
@@ -8,16 +7,12 @@ import Database from "../pages/Database";
 import LiveLog from "../pages/LiveLog";
 
 export function checkToken() {
-  // Replace this logic with your actual token checking mechanism
-  const token = localStorage.getItem("token"); // You may store your token in localStorage
-  return !!token; // Return true if token exists, false otherwise
+  const token = localStorage.getItem("token"); 
+  return !!token;
 }
 
 const AppLayout = () => {
-  // Check for the token
   const hasToken = checkToken();
-
-  // If no token, redirect to sign-in page
   if (!hasToken) {
     return <Navigate to="/sign-in" />;
   }

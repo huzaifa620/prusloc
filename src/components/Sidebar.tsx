@@ -1,15 +1,22 @@
 import { links } from "../data/SidebarLinks";
+import { useContext, useState, useLayoutEffect } from 'react';
 import { Link, useLocation } from "react-router-dom";
+//import  { UserContext } from "../contexts/UserContext";
 
 export default function Sidebar() {
   const { pathname } = useLocation();
+  //const { user } = useContext(UserContext)
+  const [userName, setUserName] = useState<string>('')
 
-  const user = {
-    username: "JohnDoe",
-  };
+  useLayoutEffect(() => {
+    const username = localStorage.getItem("username");
+    setUserName(username || '');
+  }, [userName])
 
   const logout = () => {
-    
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    window.location.href = 'sign-in'
   };
 
   return (
@@ -40,16 +47,20 @@ export default function Sidebar() {
           })}
         </div>
       </div>
-
-      <div className="w-full flex items-center justify-between text-center space-x-4 bg-primary p-4 rounded-lg shadow-2xl border">
-        <div className="flex items-center justify-center space-x-4">
-          <div className="bg-sky-500 font-extrabold text-white py-2 px-4 rounded-xl"> {user.username[0]} </div>
-          <p className="text-white font-bold"> {user.username} </p>
-        </div>
-        <button onClick={logout} className="text-4xl cursor-pointer">
-          ↪️
-        </button>
-      </div>
+      
+      { userName && 
+        (
+          <div className="w-full flex items-center justify-between text-center space-x-4 bg-primary p-4 rounded-lg shadow-2xl border">
+            <div className="flex items-center justify-center space-x-4">
+              <div className="bg-sky-500 font-extrabold text-white py-2 px-4 uppercase rounded-xl"> {userName[0]} </div>
+              <p className="text-white font-bold"> {userName} </p>
+            </div>
+            <button onClick={logout} className="text-4xl cursor-pointer" title="Logout">
+              ↪️
+            </button>
+          </div>
+        )
+      }
 
     </div>
   );

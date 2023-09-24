@@ -82,7 +82,6 @@ export default function ForeClosuresData({ data, tableName }: Props) {
     window.URL.revokeObjectURL(url);
   };
   
-  
 
   return (
     <div className="bg-white p-8 h-full rounded-3xl border shadow-2xl">

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Papa from "papaparse";
 import {
   Icon,
   Table,
@@ -14,7 +15,7 @@ import {
   MultiSelect,
   MultiSelectItem,
 } from "@tremor/react";
-import { InformationCircleIcon } from "@heroicons/react/solid";
+import { InformationCircleIcon, ArrowCircleDownIcon } from "@heroicons/react/solid";
 
 export type Foreclosure = {
   date_ran: string;
@@ -41,7 +42,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
     if (data && data.length > 0) {
       setTableHeader(Object.keys(data[0]));
     }
-  }, [data, selectedDate, selectedTdnNo, selectedOccurrence]);
+  }, [data]);
 
   const isForeclosureSelected = (foreclosures: Foreclosure) => {
     const isDateSelected =
@@ -55,10 +56,37 @@ export default function ForeClosuresData({ data, tableName }: Props) {
   
     return isDateSelected && isTdnNoSelected && isOccurrenceSelected;
   };
+
+  const exportToCSV = () => {
+    // Filter the data based on the selected filters
+    const filteredData = data.filter((item) => isForeclosureSelected(item));
+  
+    // Create a CSV string from the filtered data
+    const csvData = Papa.unparse(filteredData);
+  
+    // Create a Blob object containing the CSV data
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+  
+    // Create a temporary URL for downloading the Blob
+    const url = window.URL.createObjectURL(blob);
+  
+    // Create a temporary link element for initiating the download
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${tableName}_filtered_data.csv`);
+  
+    // Trigger a click event to download the CSV file
+    link.click();
+  
+    // Release the temporary URL and link
+    window.URL.revokeObjectURL(url);
+  };
+  
   
 
   return (
     <div className="bg-white p-8 h-full rounded-3xl border shadow-2xl">
+
       <div>
         <Flex className="space-x-0.5" justifyContent="start" alignItems="center">
           <Title className="uppercase"> {tableName.replace("_", " ")} </Title>
@@ -69,42 +97,56 @@ export default function ForeClosuresData({ data, tableName }: Props) {
           />
         </Flex>
       </div>
-      <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2">
-        <MultiSelect
-          className="max-w-full sm:max-w-xs"
-          onValueChange={setSelectedTdnNo}
-          placeholder="Select TDN No..."
-        >
-          {data.map((item) => (
-            <MultiSelectItem key={item.tdn_no} value={item.tdn_no.toString()}>
-              {item.tdn_no}
-            </MultiSelectItem>
-          ))}
-        </MultiSelect>
 
-        <Select
-          className="max-w-full sm:max-w-xs"
-          onValueChange={(value) => setSelectedDate(value)}
-          placeholder="Select Date..."
-        >
-          {[...new Set(data.map((item) => item.date_ran.split("T")[0]))].map((date) => (
-            <SelectItem key={date} value={date}>
-              {date}
-            </SelectItem>
-          ))}
-        </Select>
+      <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 items-center justify-between w-full">
 
-        <Select
-          className="max-w-full sm:max-w-xs"
-          onValueChange={(value) => setSelectedOccurrence(parseInt(value))}
-          placeholder="Select Occurrence..."
+        <div className="flex flex-col lg:flex-row w-1/2 space-y-2 lg:space-y-0 lg:space-x-2 mt-2">
+          <MultiSelect
+            className="max-w-full sm:max-w-xs"
+            onValueChange={setSelectedTdnNo}
+            placeholder="Select TDN No..."
+          >
+            {data.map((item) => (
+              <MultiSelectItem key={item.tdn_no} value={item.tdn_no.toString()}>
+                {item.tdn_no}
+              </MultiSelectItem>
+            ))}
+          </MultiSelect>
+
+          <Select
+            className="max-w-full sm:max-w-xs"
+            onValueChange={(value) => setSelectedDate(value)}
+            placeholder="Select Date..."
+          >
+            {[...new Set(data.map((item) => item.date_ran.split("T")[0]))].map((date) => (
+              <SelectItem key={date} value={date}>
+                {date}
+              </SelectItem>
+            ))}
+          </Select>
+
+          <Select
+            className="max-w-full sm:max-w-xs"
+            onValueChange={(value) => setSelectedOccurrence(parseInt(value))}
+            placeholder="Select Occurrence..."
+          >
+            {[...new Set(data.map((item) => item.occurrence))].map((occurrence) => (
+              <SelectItem key={occurrence} value={occurrence.toString()}>
+                {occurrence}
+              </SelectItem>
+            ))}
+          </Select>
+        </div>
+
+        <button
+          className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark hover:bg-opacity-90 flex items-center justify-center space-x-2 group"
+          onClick={exportToCSV}
         >
-          {[...new Set(data.map((item) => item.occurrence))].map((occurrence) => (
-            <SelectItem key={occurrence} value={occurrence.toString()}>
-              {occurrence}
-            </SelectItem>
-          ))}
-        </Select>
+          <p>Export CSV</p>
+          <ArrowCircleDownIcon className="h-8 w-8 transform group-hover:animate-bounce" />
+        </button>
+
+        
       </div>
 
       <Table className="mt-4 h-[85%] 2xl:h-[90%] border rounded-xl">

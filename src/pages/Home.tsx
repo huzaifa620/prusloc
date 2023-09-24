@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TextHeader from '../components/TextHeader';
 import { links } from '../data/SidebarLinks';
@@ -15,6 +15,14 @@ export type Users = {
 
 export default function Home() {
   const { isInput, setIsInput } = useContext(ScriptContext);
+
+  const [userName, setUserName] = useState<string>('')
+
+  useLayoutEffect(() => {
+    const username = localStorage.getItem("username");
+    setUserName(username || '');
+  }, [userName])
+
   const [users, setUsers] = useState<Users[]>([]);
   const [newUser, setNewUser] = useState({
     username: '',
@@ -160,98 +168,110 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-8 items-center justify-between w-full px-8">
+      {
+        userName === 'adminangel' ? (
 
-        <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 w-3/5">
+          <>
+            <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-8 items-center justify-between w-full px-8">
 
-          {/* <Select className="max-w-full sm:max-w-xs" onValueChange={setSelectedDate} placeholder="Select Date...">
-              {[...new Set(data.map((item) => item.date_ran))].map((date) => (
-                  <SelectItem key={date} value={date}>
-                      {date}
-                  </SelectItem>
-              ))}
-          </Select> */}
+              <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 w-3/5">
 
-        </div>
+              </div>
 
-        <button
-          className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark flex items-center justify-center space-x-2 group"
-          onClick={() => setIsInput(!isInput)} >
-            <UserAddIcon className="h-8 w-8 transform group-hover:animate-pulse" />
-            <p>Create User</p>
-        </button>
+              <button
+                className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark flex items-center justify-center space-x-2 group"
+                onClick={() => setIsInput(!isInput)} >
+                  <UserAddIcon className="h-8 w-8 transform group-hover:animate-pulse" />
+                  <p>Create User</p>
+              </button>
 
-      </div>
-      
-      <Table className="mt-4 h-[85%] 2xl:h-[60%] border rounded-xl bg-white shadow-2xl">
-        <TableHead className="bg-primary">
-          <TableRow>
-            <TableHeaderCell className="uppercase text-white text-center">
-              Username
-            </TableHeaderCell>
-            <TableHeaderCell className="uppercase text-white text-center">
-              Tasks
-            </TableHeaderCell>
-            <TableHeaderCell className="uppercase text-white text-center">
-              Action
-            </TableHeaderCell>
-          </TableRow>
-        </TableHead>
-        <TableBody className="font-semibold text-tremor-content-emphasis">
-          {users.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell className="text-center">{item.username}</TableCell>
-              <TableCell className="text-center whitespace-normal">
-                {editableUserId === item.id ? (
-                  <input
-                    type="text"
-                    name="tasks"
-                    value={editedTasks}
-                    onChange={(e) => setEditedTasks(e.target.value)}
-                    className='border-2 rounded-xl p-2 w-full'
-                  />
-                ) : (
-                  item.tasks
-                )}
-              </TableCell>
-              <TableCell className="text-center flex items-center justify-center space-x-4">
-                <button
-                  onClick={() => editUser(item.id)}
-                  className={`flex items-center justify-center text-white ${editableUserId === item.id && 'bg-teal-500'} bg-blue-500 px-4 py-2 rounded-lg hover:underline`}
-                >
-                  {editableUserId === item.id ? (
-                    <div className='flex items-center justify-center space-x-2'>
-                      <CheckCircleIcon className='h-6 w-6 text-white' />
-                      <p>Confirm</p>
-                    </div>
-                  ) : (
-                    <div className='flex items-center justify-center space-x-2'>
-                      <PencilIcon className='h-6 w-6 text-white' />
-                      <p>Edit</p>
-                    </div>
-                  )}
-                </button>
-                <button
-                  onClick={() => deleteUser(item.id)}
-                  className={`flex items-center justify-center text-white ${deleteConfirmation === item.id && 'bg-teal-500'} bg-red-500 px-4 py-2 rounded-lg hover:underline`}
-                >
-                  {deleteConfirmation === item.id ? (
-                    <div className='flex items-center justify-center space-x-2'>
-                      <CheckCircleIcon className='h-6 w-6 text-white' />
-                      <p>Confirm</p>
-                    </div>
-                  ) : (
-                    <div className='flex items-center justify-center space-x-2'>
-                      <TrashIcon className='h-6 w-6 text-white' />
-                      <p>Delete</p>
-                    </div>
-                  )}
-                </button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+            </div>
+            
+            <Table className="mt-4 h-[85%] 2xl:h-[60%] border rounded-xl bg-white shadow-2xl">
+              <TableHead className="bg-primary">
+                <TableRow>
+                  <TableHeaderCell className="uppercase text-white text-center">
+                    Username
+                  </TableHeaderCell>
+                  <TableHeaderCell className="uppercase text-white text-center">
+                    Tasks
+                  </TableHeaderCell>
+                  <TableHeaderCell className="uppercase text-white text-center">
+                    Action
+                  </TableHeaderCell>
+                </TableRow>
+              </TableHead>
+              <TableBody className="font-semibold text-tremor-content-emphasis">
+                {users.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="text-center">{item.username}</TableCell>
+                    <TableCell className="text-center whitespace-normal">
+                      {editableUserId === item.id ? (
+                        <input
+                          type="text"
+                          name="tasks"
+                          value={editedTasks}
+                          onChange={(e) => setEditedTasks(e.target.value)}
+                          className='border-2 rounded-xl p-2 w-full'
+                        />
+                      ) : (
+                        item.tasks
+                      )}
+                    </TableCell>
+                    <TableCell className="text-center flex items-center justify-center space-x-4">
+                      <button
+                        onClick={() => editUser(item.id)}
+                        className={`flex items-center justify-center text-white ${editableUserId === item.id && 'bg-teal-500'} bg-blue-500 px-4 py-2 rounded-lg hover:underline`}
+                      >
+                        {editableUserId === item.id ? (
+                          <div className='flex items-center justify-center space-x-2'>
+                            <CheckCircleIcon className='h-6 w-6 text-white' />
+                            <p>Confirm</p>
+                          </div>
+                        ) : (
+                          <div className='flex items-center justify-center space-x-2'>
+                            <PencilIcon className='h-6 w-6 text-white' />
+                            <p>Edit</p>
+                          </div>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => deleteUser(item.id)}
+                        className={`flex items-center justify-center text-white ${deleteConfirmation === item.id && 'bg-teal-500'} bg-red-500 px-4 py-2 rounded-lg hover:underline`}
+                      >
+                        {deleteConfirmation === item.id ? (
+                          <div className='flex items-center justify-center space-x-2'>
+                            <CheckCircleIcon className='h-6 w-6 text-white' />
+                            <p>Confirm</p>
+                          </div>
+                        ) : (
+                          <div className='flex items-center justify-center space-x-2'>
+                            <TrashIcon className='h-6 w-6 text-white' />
+                            <p>Delete</p>
+                          </div>
+                        )}
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </>
+        )
+        :
+        (
+          <div className='flex flex-col items-center p-8 mt-10 space-y-4'>
+            <h1 className='text-xl text-primary font-bold'>
+              TASKS
+            </h1>
+            <div className='bg-white py-4 rounded-3xl shadow-2xl border w-full px-8'>
+              {
+                users.find((user) => user.username === userName)?.tasks
+              }
+            </div> 
+          </div>
+        )
+      }
 
       {isInput && (
 

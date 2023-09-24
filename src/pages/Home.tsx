@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import TextHeader from '../components/TextHeader';
 import { links } from '../data/SidebarLinks';
 import { Table, TableRow, TableCell, TableHead, TableHeaderCell, TableBody } from "@tremor/react";
-import { UserAddIcon, PencilIcon, TrashIcon } from "@heroicons/react/solid";
+import { UserAddIcon, PencilIcon, TrashIcon, CheckCircleIcon } from "@heroicons/react/solid";
 import { ScriptContext } from "../contexts/Context";
 
 export type Users = {
@@ -21,9 +21,9 @@ export default function Home() {
     password: '',
   });
   const [loading, setLoading] = useState(false);
-  const [editableUserId, setEditableUserId] = useState<number | null>(null); // Track editable user ID
-  const [editedTasks, setEditedTasks] = useState<string>(''); // Track edited tasks
-  const [deleteConfirmation, setDeleteConfirmation] = useState<number | null>(null); // Track delete confirmation
+  const [editableUserId, setEditableUserId] = useState<number | null>(null);
+  const [editedTasks, setEditedTasks] = useState<string>('');
+  const [deleteConfirmation, setDeleteConfirmation] = useState<number | null>(null);
 
   const fetchUsers = async () => {
     try {
@@ -73,7 +73,6 @@ export default function Home() {
 
   const editUser = async (userId: number) => {
     if (editableUserId === userId) {
-      // User is currently being edited, confirm the edit
       try {
         setLoading(true);
         const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/edit-user/${userId}`, {
@@ -85,15 +84,14 @@ export default function Home() {
         });
   
         if (response.ok) {
-          console.log('User updated successfully');
           setEditableUserId(null);
           setEditedTasks('');
-          fetchUsers(); // Fetch updated user data
+          fetchUsers();
         } else {
-          console.error('Error updating user:', response.status);
+          console.log('Error updating user:', response.status);
         }
       } catch (error) {
-        console.error('Error updating user:', error);
+        console.log('Error updating user:', error);
       }
     } else {
       // User is not currently being edited, start editing
@@ -114,17 +112,15 @@ export default function Home() {
         });
     
         if (response.ok) {
-          console.log('User deleted successfully');
           setDeleteConfirmation(null);
-          fetchUsers(); // Fetch updated user data
+          fetchUsers();
         } else {
-          console.error('Error deleting user:', response.status);
+          console.log('Error deleting user:', response.status);
         }
       } catch (error) {
-        console.error('Error deleting user:', error);
+        console.log('Error deleting user:', error);
       }
     } else {
-      // Ask for confirmation
       setDeleteConfirmation(userId);
     }
   };
@@ -224,9 +220,15 @@ export default function Home() {
                   className={`flex items-center justify-center text-white ${editableUserId === item.id && 'bg-teal-500'} bg-blue-500 px-4 py-2 rounded-lg hover:underline`}
                 >
                   {editableUserId === item.id ? (
-                    <span>Confirm</span>
+                    <div className='flex items-center justify-center space-x-2'>
+                      <CheckCircleIcon className='h-6 w-6 text-white' />
+                      <p>Confirm</p>
+                    </div>
                   ) : (
-                    <span>Edit</span>
+                    <div className='flex items-center justify-center space-x-2'>
+                      <PencilIcon className='h-6 w-6 text-white' />
+                      <p>Edit</p>
+                    </div>
                   )}
                 </button>
                 <button
@@ -234,9 +236,15 @@ export default function Home() {
                   className={`flex items-center justify-center text-white ${deleteConfirmation === item.id && 'bg-teal-500'} bg-red-500 px-4 py-2 rounded-lg hover:underline`}
                 >
                   {deleteConfirmation === item.id ? (
-                    <span>Confirm</span>
+                    <div className='flex items-center justify-center space-x-2'>
+                      <CheckCircleIcon className='h-6 w-6 text-white' />
+                      <p>Confirm</p>
+                    </div>
                   ) : (
-                    <span>Delete</span>
+                    <div className='flex items-center justify-center space-x-2'>
+                      <TrashIcon className='h-6 w-6 text-white' />
+                      <p>Delete</p>
+                    </div>
                   )}
                 </button>
               </TableCell>

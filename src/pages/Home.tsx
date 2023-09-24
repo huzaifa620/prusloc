@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import TextHeader from '../components/TextHeader';
 import { links } from '../data/SidebarLinks';
 import { Table, TableRow, TableCell, TableHead, TableHeaderCell, TableBody } from "@tremor/react";
-import { UserAddIcon } from "@heroicons/react/solid";
+import { UserAddIcon, PencilIcon, TrashIcon } from "@heroicons/react/solid";
 import { ScriptContext } from "../contexts/Context";
 
 export type Users = {
@@ -20,7 +20,10 @@ export default function Home() {
     username: '',
     password: '',
   });
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [editableUserId, setEditableUserId] = useState<number | null>(null); // Track editable user ID
+  const [editedTasks, setEditedTasks] = useState<string>(''); // Track edited tasks
+  const [deleteConfirmation, setDeleteConfirmation] = useState<number | null>(null); // Track delete confirmation
 
   const fetchUsers = async () => {
     try {
@@ -68,7 +71,65 @@ export default function Home() {
     }
   };
 
-  const handleInputChange = (event:any) => {
+  const editUser = async (userId: number) => {
+    if (editableUserId === userId) {
+      // User is currently being edited, confirm the edit
+      try {
+        setLoading(true);
+        const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/edit-user/${userId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ tasks: editedTasks }),
+        });
+  
+        if (response.ok) {
+          console.log('User updated successfully');
+          setEditableUserId(null);
+          setEditedTasks('');
+          fetchUsers(); // Fetch updated user data
+        } else {
+          console.error('Error updating user:', response.status);
+        }
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
+    } else {
+      // User is not currently being edited, start editing
+      const userToEdit = users.find(user => user.id === userId);
+      if (userToEdit) {
+        setEditableUserId(userId);
+        setEditedTasks(userToEdit.tasks);
+      }
+    }
+  };
+  
+  const deleteUser = async (userId: number) => {
+    if (deleteConfirmation === userId) {
+      // User confirmed deletion
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/delete-user/${userId}`, {
+          method: 'DELETE',
+        });
+    
+        if (response.ok) {
+          console.log('User deleted successfully');
+          setDeleteConfirmation(null);
+          fetchUsers(); // Fetch updated user data
+        } else {
+          console.error('Error deleting user:', response.status);
+        }
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    } else {
+      // Ask for confirmation
+      setDeleteConfirmation(userId);
+    }
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setNewUser({
       ...newUser,
@@ -127,27 +188,61 @@ export default function Home() {
       </div>
       
       <Table className="mt-4 h-[85%] 2xl:h-[60%] border rounded-xl bg-white shadow-2xl">
-
         <TableHead className="bg-primary">
-            <TableRow>
-              <TableHeaderCell className={`uppercase text-white text-center`}>
-                Username
-              </TableHeaderCell>
-              <TableHeaderCell className={`uppercase text-white text-center`}>
-                Tasks
-              </TableHeaderCell>
-            </TableRow>
+          <TableRow>
+            <TableHeaderCell className="uppercase text-white text-center">
+              Username
+            </TableHeaderCell>
+            <TableHeaderCell className="uppercase text-white text-center">
+              Tasks
+            </TableHeaderCell>
+            <TableHeaderCell className="uppercase text-white text-center">
+              Action
+            </TableHeaderCell>
+          </TableRow>
         </TableHead>
-
         <TableBody className="font-semibold text-tremor-content-emphasis">
           {users.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell className="text-center">{item.username}</TableCell>
-                <TableCell className="text-center">{item.tasks}</TableCell>
-              </TableRow>
-            ))}
+            <TableRow key={index}>
+              <TableCell className="text-center">{item.username}</TableCell>
+              <TableCell className="text-center whitespace-normal">
+                {editableUserId === item.id ? (
+                  <input
+                    type="text"
+                    name="tasks"
+                    value={editedTasks}
+                    onChange={(e) => setEditedTasks(e.target.value)}
+                    className='border-2 rounded-xl p-2 w-full'
+                  />
+                ) : (
+                  item.tasks
+                )}
+              </TableCell>
+              <TableCell className="text-center flex items-center justify-center space-x-4">
+                <button
+                  onClick={() => editUser(item.id)}
+                  className={`flex items-center justify-center text-white ${editableUserId === item.id && 'bg-teal-500'} bg-blue-500 px-4 py-2 rounded-lg hover:underline`}
+                >
+                  {editableUserId === item.id ? (
+                    <span>Confirm</span>
+                  ) : (
+                    <span>Edit</span>
+                  )}
+                </button>
+                <button
+                  onClick={() => deleteUser(item.id)}
+                  className={`flex items-center justify-center text-white ${deleteConfirmation === item.id && 'bg-teal-500'} bg-red-500 px-4 py-2 rounded-lg hover:underline`}
+                >
+                  {deleteConfirmation === item.id ? (
+                    <span>Confirm</span>
+                  ) : (
+                    <span>Delete</span>
+                  )}
+                </button>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
-        
       </Table>
 
       {isInput && (

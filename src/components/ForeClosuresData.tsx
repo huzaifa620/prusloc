@@ -24,6 +24,7 @@ export type Foreclosure = {
   borrower: string;
   address: string;
   original_trustee: string;
+  auction_date: string;
   occurrence: number;
 };
 
@@ -170,6 +171,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
                 <TableCell className="text-center">{item.borrower}</TableCell>
                 <TableCell className="text-center">{item.address}</TableCell>
                 <TableCell className="text-center">{item.original_trustee}</TableCell>
+                <TableCell className="text-center">{item.auction_date.split('T')[0]}</TableCell>
                 <TableCell className="text-center">{item.occurrence}</TableCell>
               </TableRow>
             ))}

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import TextHeader from '../components/TextHeader';
 
 function LiveLog() {
   const [logData, setLogData] = useState('');
   const [activeTab, setActiveTab] = useState(0);
-
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  
   const tabs = [
     { label: 'TN COURTS', endpoint: 'tn_courts' },
     { label: 'TNLEDGER FORECLOSURES', endpoint: 'tnledger_foreclosures' },
@@ -18,11 +19,19 @@ function LiveLog() {
       if (response.ok) {
         const logContent = await response.text();
         setLogData(logContent);
+        scrollToBottom(); // Scroll to the bottom when new content is added
       } else {
         setLogData('Nothing to show!')
       }
     } catch (error) {
       setLogData('Nothing to show!');
+    }
+  };
+
+  // Function to scroll the textarea to the bottom
+  const scrollToBottom = () => {
+    if (textareaRef.current) {
+      textareaRef.current.scrollTop = textareaRef.current.scrollHeight;
     }
   };
 
@@ -35,6 +44,7 @@ function LiveLog() {
 
     eventSource.onmessage = (event) => {
       setLogData((prevData) => prevData + event.data + '\n');
+      scrollToBottom(); // Scroll to the bottom when new content is added
     };
 
     // Cleanup the SSE connection when unmounting
@@ -45,7 +55,7 @@ function LiveLog() {
 
   const handleTabClick = (tabIndex: number) => {
     // Fetch log content for the clicked tab
-    setLogData('')
+    setLogData('');
     fetchLogForTab(tabIndex);
     setActiveTab(tabIndex);
   };
@@ -66,6 +76,7 @@ function LiveLog() {
           ))}
         </div>
         <textarea
+          ref={textareaRef}
           className="w-full py-4 px-8 rounded-2xl border text-justify shadow-2xl overflow-y-scroll"
           value={logData}
           rows={30}

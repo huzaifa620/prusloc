@@ -3,6 +3,7 @@ import TextHeader from '../components/TextHeader';
 import ForeClosuresData from '../components/ForeClosuresData';
 import TnCourtsData from '../components/TnCourtsData';
 import TnledgerCourtsData from '../components/TnledgerCourtsData';
+import TnPublicNoticeData from '../components/TnPublicNoticeData';
 
 interface ScriptsStatus {
   completion_date_and_time: string;
@@ -91,7 +92,9 @@ export default function Database() {
           :
           (
             mainView === 2 ? (
-              <></>
+              <div className="p-4 h-full">
+                <TnPublicNoticeData data={data} tableName={tableName} />
+              </div>
             )
             :
             (

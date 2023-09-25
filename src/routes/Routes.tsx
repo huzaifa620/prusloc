@@ -18,8 +18,8 @@ const AppLayout = () => {
   }
 
   return (
-    <div className="grid grid-cols-5 bg-white/60 backdrop-blur">
-      <div className="col-span-1">
+    <div className="grid grid-cols-4 lg:grid-cols-5 bg-white/60 backdrop-blur">
+      <div className="hidden lg:grid col-span-1">
         <Sidebar />
       </div>
       <div className="col-span-4 px-4 py-6 bg-gray-100">

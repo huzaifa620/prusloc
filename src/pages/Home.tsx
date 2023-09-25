@@ -146,7 +146,7 @@ export default function Home() {
 
       <TextHeader title="Dashboard" />
 
-      <div className="grid grid-cols-3 w-full mt-8 text-primary">
+      <div className="flex flex-col items-center justify-center space-y-6 lg:space-y-0 lg:grid grid-cols-3 w-full mt-8 text-primary">
         {links.slice(1).map((el) => (
           <div
             className="relative border shadow-lg from-white via-red-50 to-cyan-100 bg-gradient-to-br w-64 h-48 justify-self-center flex justify-center items-center rounded-md  col-span-1 px-4 py-2 group"

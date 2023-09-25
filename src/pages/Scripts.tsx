@@ -25,7 +25,7 @@ export default function Scripts() {
       .then((data) => {
         setScriptsStatus(data);
       })
-      .catch((error) => console.error('Error fetching data:', error));
+      .catch((error) => console.log('Error fetching data:', error));
   };
 
   useLayoutEffect(() => {
@@ -44,7 +44,7 @@ export default function Scripts() {
     });
   
     eventSource.addEventListener('error', (error) => {
-      console.error('SSE error:', error);
+      console.log('SSE error:', error);
       eventSource.close();
     });
   

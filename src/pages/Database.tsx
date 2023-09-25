@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import TextHeader from '../components/TextHeader';
 import ForeClosuresData from '../components/ForeClosuresData';
 import TnCourtsData from '../components/TnCourtsData';
+import TnledgerCourtsData from '../components/TnledgerCourtsData';
 
 interface ScriptsStatus {
   completion_date_and_time: string;
@@ -23,7 +24,7 @@ export default function Database() {
       .then((data) => {
         setScriptsStatus(data);
       })
-      .catch((error) => console.error('Error fetching data:', error));
+      .catch((error) => console.log('Error fetching data:', error));
   };
   
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function Database() {
       .then((data) => {
         setData(data)
       })
-      .catch((error) => console.error('Error fetching data:', error));
+      .catch((error) => console.log('Error fetching data:', error));
     }
   }, [tableName]);
 
@@ -95,7 +96,9 @@ export default function Database() {
             :
             (
               mainView === 3 ? (
-                <></>
+                <div className="p-4 h-full">
+                  <TnledgerCourtsData data={data} tableName={tableName} />
+                </div>
               )
               :
               (

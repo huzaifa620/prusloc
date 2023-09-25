@@ -21,6 +21,7 @@ export default function ForeclosureInput({ route }: { route: string }) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ date: new Date(selectedDate || '').toLocaleDateString('en-US') }),
+                redirect: 'follow'
             });
 
             if (response.ok) {

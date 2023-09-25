@@ -59,20 +59,20 @@ export default function TnPublicNoticeInput() {
                     setIsInput(!isInput)
                     //
                     } else {
-                    console.error(`Failed to update status for ${scriptName}`);
+                    console.log(`Failed to update status for ${scriptName}`);
                     }
                 } catch (error) {
-                    console.error('Error:', error);
+                    console.log('Error:', error);
                 }
                 };
                 
                 updateScriptStatus('tn_courts');            
                 
             } else {
-                console.error('POST request failed');
+                console.log('POST request failed');
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.log('Error:', error);
         }
     };
 

@@ -22,7 +22,6 @@ export default function ForeclosureInput({ route }: { route: string }) {
                 },
                 body: JSON.stringify({ date: new Date(selectedDate || '').toLocaleDateString('en-US') })
             });
-            console.log(response)
             if (response.ok) {
                 // Request was successful
                 console.log('POST request successful');
@@ -41,7 +40,6 @@ export default function ForeclosureInput({ route }: { route: string }) {
                       if (response.ok) {
                         console.log(`Successfully updated status for ${scriptName}`);
                         setIsInput(!isInput)
-                        //
                       } else {
                         console.log(`Failed to update status for ${scriptName}`);
                       }

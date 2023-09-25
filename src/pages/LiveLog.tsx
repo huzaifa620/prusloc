@@ -60,6 +60,27 @@ function LiveLog() {
     setActiveTab(tabIndex);
   };
 
+  const updateTextareaRows = () => {
+    if (textareaRef.current) {
+      const screenWidth = window.innerWidth;
+      const rows = screenWidth < 1440 ? 20 : 30;
+      textareaRef.current.rows = rows;
+    }
+  };
+
+  useEffect(() => {
+    // Call the update function initially
+    updateTextareaRows();
+
+    // Attach the event listener
+    window.addEventListener('resize', updateTextareaRows);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('resize', updateTextareaRows);
+    };
+  }, [])
+
   return (
     <div className="app flex flex-col">
       <TextHeader title="Live Logs" />

@@ -99,7 +99,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
 
       <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 items-center justify-between w-full">
 
-        <div className="flex flex-col lg:flex-row w-1/2 space-y-2 lg:space-y-0 lg:space-x-2 mt-2">
+        <div className="flex flex-col items-center justify-center lg:justify-start lg:flex-row w-full lg:w-1/2 space-y-2 lg:space-y-0 lg:space-x-2 mt-2">
           <MultiSelect
             className="max-w-full sm:max-w-xs"
             onValueChange={setSelectedId}
@@ -148,7 +148,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
         
       </div>
 
-      <Table className="mt-4 h-[85%] 2xl:h-[87%] border rounded-xl">
+      <Table className="mt-4 h-[65%] sm:h-[80%] 2xl:h-[87%] border rounded-xl">
         <TableHead className="bg-primary">
           <TableRow>
             {tableHeader.map((item, index) => (

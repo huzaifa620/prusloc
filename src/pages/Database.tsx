@@ -44,19 +44,15 @@ export default function Database() {
     }
   }, [tableName]);
 
-  useEffect(() => {
-    console.log(data)
-  }, [data])
-
   return (
     <div className="flex flex-col h-screen app">
-      <div className='flex'>
+      <div className='flex ml-16 lg:ml-0'>
         <TextHeader title="Database" />
         {
           mainView !== 0 && (
             <>
               <h2 className="font-bold text-xl ml-4 text-[#30415b] flex gap-4 items-center"> {` > `}</h2>
-              <h2 className="font-bold text-xl ml-4 text-[#30415b] flex gap-4 items-center cursor-pointer hover:underline underline-offset-4" onClick={() => {
+              <h2 className="font-bold lg:text-xl ml-4 text-[#30415b] flex gap-4 items-center cursor-pointer hover:underline underline-offset-4" onClick={() => {
                 setMainView(0)
                 setData([])
               }}>Back to Menu</h2>
@@ -85,28 +81,28 @@ export default function Database() {
         (
           
           mainView === 1 ? (
-            <div className="p-4 h-full">
+            <div className="lg:p-4 h-full">
               <TnCourtsData data={data} tableName={tableName} />
             </div>
           )
           :
           (
             mainView === 2 ? (
-              <div className="p-4 h-full">
+              <div className="lg:p-4 h-full">
                 <TnPublicNoticeData data={data} tableName={tableName} />
               </div>
             )
             :
             (
               mainView === 3 ? (
-                <div className="p-4 h-full">
+                <div className="lg:p-4 h-full">
                   <TnledgerCourtsData data={data} tableName={tableName} />
                 </div>
               )
               :
               (
                 mainView === 4 ? (
-                  <div className="p-4 h-full">
+                  <div className="lg:p-4 h-full">
                     <ForeClosuresData data={data} tableName={tableName} />
                   </div>
                 )

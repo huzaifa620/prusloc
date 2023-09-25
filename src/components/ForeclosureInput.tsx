@@ -14,49 +14,51 @@ export default function ForeclosureInput({ route }: { route: string }) {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log('Form Data:', { date: new Date(selectedDate || '').toLocaleDateString('en-US') });
-  
-        const response = await fetch(`${import.meta.env.VITE_API_FLASK_BASE_URL}/script/${route}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ date: new Date(selectedDate || '').toLocaleDateString('en-US') })
-        });
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_FLASK_BASE_URL}/script/${route}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ date: new Date(selectedDate || '').toLocaleDateString('en-US') })
+            });
+            console.log(response)
+            if (response.ok) {
+                // Request was successful
+                console.log('POST request successful');
+                setSelectedDate(null) // to persuade user to make multiple requests 
 
-        if (response.ok) {
-            // Request was successful
-            console.log('POST request successful');
-            setSelectedDate(null) // to persuade user to make multiple requests 
-
-            const updateScriptStatus = async (scriptName: string) => {
-                try {
-                    const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/status/${scriptName}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({}),
-                    });
-                    
-                    if (response.ok) {
-                    console.log(`Successfully updated status for ${scriptName}`);
-                    setIsInput(!isInput)
-                    //
-                    } else {
-                    console.error(`Failed to update status for ${scriptName}`);
+                const updateScriptStatus = async (scriptName: string) => {
+                    try {
+                      const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/status/${scriptName}`, {
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({}),
+                      });
+                      
+                      if (response.ok) {
+                        console.log(`Successfully updated status for ${scriptName}`);
+                        setIsInput(!isInput)
+                        //
+                      } else {
+                        console.log(`Failed to update status for ${scriptName}`);
+                      }
+                    } catch (error) {
+                      console.log('Error:', error);
                     }
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-                };
-                
-                updateScriptStatus(route);
+                  };
+                  
+                  updateScriptStatus(route);
 
-        } else {
-            // Request failed
-            console.log('POST request failed');
+            } else {
+                // Request failed
+                console.log('POST request failed');
+            }
+        } catch (error) {
+            console.log('Error here:', error);
         }
-
     };
 
     return (

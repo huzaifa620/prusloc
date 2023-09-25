@@ -7,7 +7,7 @@ function LiveLog() {
 
   const tabs = [
     { label: 'TN COURTS', endpoint: 'tn_courts' },
-    { label: 'TNLEGDER FORECLOSURES', endpoint: 'tnledger_foreclosures' },
+    { label: 'TNLEDGER FORECLOSURES', endpoint: 'tnledger_foreclosures' },
     { label: 'TNLEDGER COURTS', endpoint: 'tnledger_courts' },
     { label: 'TN PUBLIC NOTICE PROBATE NOTICE', endpoint: 'tn_public_notice_probate_notice' },
   ];

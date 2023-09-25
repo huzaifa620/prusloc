@@ -40,14 +40,12 @@ export default function TnPublicNoticeInput() {
                 },
                 body: JSON.stringify({...formData, starting_date: formData.from?.toLocaleDateString('en-US'), ending_date: formData.to?.toLocaleDateString('en-US')}),
             });
-            console.log(response)
 
             if (response.ok) {
                 console.log('POST request successful');
                 setFormData({ ...formData, county: '' }); // to persuade user to make multiple requests 
                 const updateScriptStatus = async (scriptName: string) => {
                     try {
-                        console.log(scriptName)
                         const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/status/${scriptName}`, {
                             method: 'PUT',
                             headers: {
@@ -59,7 +57,6 @@ export default function TnPublicNoticeInput() {
                         if (response.ok) {
                             console.log(`Successfully updated status for ${scriptName}`);
                             setIsInput(!isInput)
-                        //
                         } else {
                             console.log(`Failed to update status for ${scriptName}`);
                         }

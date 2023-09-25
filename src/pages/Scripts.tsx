@@ -37,8 +37,7 @@ export default function Scripts() {
   
     eventSource.addEventListener('message', (event) => {
       const eventData = JSON.parse(event.data);
-      if (eventData.script === 'tn_courts') {
-        // Fetch the latest script status data when an update is received
+      if (eventData.script) {
         fetchScriptStatusData()
       }
     });

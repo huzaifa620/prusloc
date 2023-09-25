@@ -171,7 +171,7 @@ export default function Home() {
       {
         userName === 'adminangel' ? (
 
-          <>
+          <div className=''>
             <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-8 items-center justify-between w-full px-8">
 
               <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 w-3/5">
@@ -187,7 +187,7 @@ export default function Home() {
 
             </div>
             
-            <Table className="mt-4 h-[47.5%] 2xl:h-[60%] border rounded-xl bg-white shadow-2xl">
+            <Table className="mt-4 lg:h-[47.5%] 2xl:h-[60%] border rounded-xl bg-white shadow-2xl">
               <TableHead className="bg-primary">
                 <TableRow>
                   <TableHeaderCell className="uppercase text-white text-center">
@@ -201,7 +201,7 @@ export default function Home() {
                   </TableHeaderCell>
                 </TableRow>
               </TableHead>
-              <TableBody className="font-semibold text-tremor-content-emphasis">
+              <TableBody className="font-semibold text-tremor-content-emphasis text-xs lg:text-base">
                 {users.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell className="text-center">{item.username}</TableCell>
@@ -218,10 +218,10 @@ export default function Home() {
                         item.tasks
                       )}
                     </TableCell>
-                    <TableCell className="text-center flex items-center justify-center space-x-4">
+                    <TableCell className="text-center flex flex-col lg:flex-row space-y-2 lg:space-y-0 items-center justify-center lg:space-x-4">
                       <button
                         onClick={() => editUser(item.id)}
-                        className={`flex items-center justify-center text-white ${editableUserId === item.id && 'bg-teal-500'} bg-blue-500 px-4 py-2 rounded-lg hover:underline`}
+                        className={`flex items-center justify-center w-28 text-white ${editableUserId === item.id && 'bg-teal-500'} bg-blue-500 px-4 py-2 rounded-lg hover:underline`}
                       >
                         {editableUserId === item.id ? (
                           <div className='flex items-center justify-center space-x-2'>
@@ -237,7 +237,7 @@ export default function Home() {
                       </button>
                       <button
                         onClick={() => deleteUser(item.id)}
-                        className={`flex items-center justify-center text-white ${deleteConfirmation === item.id && 'bg-teal-500'} bg-red-500 px-4 py-2 rounded-lg hover:underline`}
+                        className={`flex items-center w-28 justify-center text-white ${deleteConfirmation === item.id && 'bg-teal-500'} bg-red-500 px-4 py-2 rounded-lg hover:underline`}
                       >
                         {deleteConfirmation === item.id ? (
                           <div className='flex items-center justify-center space-x-2'>
@@ -256,7 +256,7 @@ export default function Home() {
                 ))}
               </TableBody>
             </Table>
-          </>
+          </div>
         )
         :
         (

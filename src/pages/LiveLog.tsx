@@ -63,7 +63,7 @@ function LiveLog() {
   const updateTextareaRows = () => {
     if (textareaRef.current) {
       const screenWidth = window.innerWidth;
-      const rows = screenWidth < 1440 ? 20 : 30;
+      const rows = screenWidth < 1440 ? (screenWidth < 500 ? 12 : 20) : 30;
       textareaRef.current.rows = rows;
     }
   };
@@ -85,7 +85,7 @@ function LiveLog() {
     <div className="app flex flex-col">
       <TextHeader title="Live Logs" />
       <div className="flex flex-col p-4 space-y-4">
-        <div className="flex space-x-4">
+        <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-4">
           {tabs.map((tab, index) => (
             <button
               key={index}

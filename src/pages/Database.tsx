@@ -69,8 +69,8 @@ export default function Database() {
         (
           <div className="grid grid-cols-2 gap-8 w-full mt-8 text-primary">
             {scriptsStatus.map((table, ind)=>(
-              <div className="relative border shadow-lg from-white via-red-50 to-cyan-100 bg-gradient-to-br w-3/4 h-64 justify-self-center flex justify-center items-center rounded-md  col-span-1 px-4 py-2 group">
-                <span className="absolute top-0 left-0 py-1 px-2 bg-primary text-white rounded-tl-md rounded-br-md font-medium">{table.script.replace(/_/g, ' ').toUpperCase()}</span>
+              <div className="relative border shadow-lg from-white via-red-50 to-cyan-100 bg-gradient-to-br w-full lg:w-3/4 h-56 lg:h-64 justify-self-center flex justify-center items-center rounded-md  col-span-1 px-4 py-2 group">
+                <span className="absolute top-0 left-0 py-1 px-2 bg-primary text-white rounded-tl-md rounded-br-md font-medium text-xs lg:text-base">{table.script.replace(/_/g, ' ').toUpperCase()}</span>
                 <div className="text-3xl bg-primary text-white w-16 h-16 rounded-full flex justify-center items-center group-hover:animate-bounce">{ind+1}</div>
                 <div className="w-full text-center absolute bottom-0 py-1.5 px-2 bg-primary text-white rounded-br-md rounded-bl-md font-medium opacity-0 group-hover:opacity-100 duration-500 cursor-pointer" onClick={() => {
                   setTableName(table.script)

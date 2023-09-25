@@ -55,7 +55,7 @@ export default function Scripts() {
   return (
     <div className="app">
       <TextHeader title="Scripts" />
-      <div className="relative overflow-x-auto my-8 w-10/12 mx-auto rounded-3xl shadow-2xl">
+      <div className="relative overflow-x-auto my-8 lg:w-10/12 text-xs lg:text-base mx-auto rounded-3xl shadow-2xl">
         <table className="w-full text-center text-primary border">
           <thead className="text-white uppercase bg-primary text-lg">
             <tr>

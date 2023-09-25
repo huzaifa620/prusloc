@@ -66,7 +66,7 @@ function LiveLog() {
           ))}
         </div>
         <textarea
-          className="w-full py-4 px-8 rounded-2xl border text-justify"
+          className="w-full py-4 px-8 rounded-2xl border text-justify shadow-2xl overflow-y-scroll"
           value={logData}
           rows={30}
           readOnly

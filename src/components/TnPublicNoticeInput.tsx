@@ -31,42 +31,44 @@ export default function TnPublicNoticeInput() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('Form Data:', {...formData, from: formData.from?.toLocaleDateString('en-US'), to: formData.to?.toLocaleDateString('en-US')});
+        console.log('Form Data:', {...formData, starting_date: formData.from?.toLocaleDateString('en-US'), ending_date: formData.to?.toLocaleDateString('en-US')});
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_FLASK_BASE_URL}/script/tn_public_notice`, {
+            const response = await fetch(`${import.meta.env.VITE_API_FLASK_BASE_URL}/script/tn_public_notice_probate_notice`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({...formData, from: formData.from?.toLocaleDateString('en-US'), to: formData.to?.toLocaleDateString('en-US')}),
+                body: JSON.stringify({...formData, starting_date: formData.from?.toLocaleDateString('en-US'), ending_date: formData.to?.toLocaleDateString('en-US')}),
             });
+            console.log(response)
 
             if (response.ok) {
                 console.log('POST request successful');
                 setFormData({ ...formData, county: '' }); // to persuade user to make multiple requests 
                 const updateScriptStatus = async (scriptName: string) => {
-                try {
-                    const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/status/${scriptName}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({}),
-                    });
-                    
-                    if (response.ok) {
-                    console.log(`Successfully updated status for ${scriptName}`);
-                    setIsInput(!isInput)
-                    //
-                    } else {
-                    console.log(`Failed to update status for ${scriptName}`);
+                    try {
+                        console.log(scriptName)
+                        const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/status/${scriptName}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({}),
+                        });
+                        
+                        if (response.ok) {
+                            console.log(`Successfully updated status for ${scriptName}`);
+                            setIsInput(!isInput)
+                        //
+                        } else {
+                            console.log(`Failed to update status for ${scriptName}`);
+                        }
+                    } catch (error) {
+                        console.log('Error:', error);
                     }
-                } catch (error) {
-                    console.log('Error:', error);
-                }
                 };
                 
-                updateScriptStatus('tn_courts');            
+                updateScriptStatus('tn_public_notice_probate_notice');            
                 
             } else {
                 console.log('POST request failed');

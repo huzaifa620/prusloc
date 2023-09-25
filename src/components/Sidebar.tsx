@@ -49,12 +49,12 @@ export default function Sidebar() {
       
       { userName && 
         (
-          <div className="w-full flex items-center justify-between text-center space-x-4 bg-primary p-4 rounded-lg shadow-2xl border">
+          <div className="w-full flex items-center justify-between text-center space-x-2 2xl:space-x-4 bg-primary p-4 rounded-lg shadow-2xl border">
             <div className="flex items-center justify-center space-x-4">
-              <div className="bg-sky-500 font-extrabold text-white py-2 px-4 uppercase rounded-xl"> {userName[0]} </div>
+              <div className="bg-sky-500 font-extrabold text-white py-2 px-3 2xl:px-4 uppercase rounded-xl"> {userName[0]} </div>
               <p className="text-white font-bold"> {userName} </p>
             </div>
-            <button onClick={logout} className="text-4xl cursor-pointer" title="Logout">
+            <button onClick={logout} className="text-2xl 2xl:text-4xl cursor-pointer" title="Logout">
               ↪️
             </button>
           </div>

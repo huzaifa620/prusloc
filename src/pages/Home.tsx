@@ -179,7 +179,7 @@ export default function Home() {
               </div>
 
               <button
-                className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark flex items-center justify-center space-x-2 group"
+                className="bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark flex items-center justify-center space-x-2 group"
                 onClick={() => setIsInput(!isInput)} >
                   <UserAddIcon className="h-8 w-8 transform group-hover:animate-pulse" />
                   <p>Create User</p>
@@ -187,7 +187,7 @@ export default function Home() {
 
             </div>
             
-            <Table className="mt-4 h-[85%] 2xl:h-[60%] border rounded-xl bg-white shadow-2xl">
+            <Table className="mt-4 h-[47.5%] 2xl:h-[60%] border rounded-xl bg-white shadow-2xl">
               <TableHead className="bg-primary">
                 <TableRow>
                   <TableHeaderCell className="uppercase text-white text-center">

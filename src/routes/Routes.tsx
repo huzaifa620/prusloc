@@ -19,10 +19,6 @@ const AppLayout = () => {
   const hasToken = checkToken();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
-
   if (!hasToken) {
     return <Navigate to="/sign-in" />;
   }
@@ -63,18 +59,10 @@ const AppLayout = () => {
 
                     <div className="my-8">
                       {links?.map((link) => {
-                        const styles =
-                          pathname === link.href ? "bg-primary text-white hover:bg-primary" : "hover:bg-violet-50";
+                        const styles = pathname === link.href ? "bg-primary text-white hover:bg-primary" : "hover:bg-violet-50";
                         return (
-                          <div
-                            className={`w-full group ${styles} rounded-md`}
-                            key={link.title}
-                            onClick={() => !isSidebarOpen}
-                          >
-                            <Link
-                              to={link.href}
-                              className={`w-full h-full py-2.5 px-3 my-2 font-semibold flex items-center group-hover:translate-x-2 duration-500 gap-2 `}
-                            >
+                          <div className={`w-full group ${styles} rounded-md`} key={link.title} onClick={() => setSidebarOpen(!isSidebarOpen)}>
+                            <Link to={link.href} className={`w-full h-full py-2.5 px-3 my-2 font-semibold flex items-center group-hover:translate-x-2 duration-500 gap-2 `}>
                               {link.icon}&nbsp;{link.title}
                             </Link>
                           </div>
@@ -105,7 +93,7 @@ const AppLayout = () => {
         )
       }
 
-      <div className="fixed top-0 left-0 p-6 cursor-pointer lg:hidden z-10" onClick={toggleSidebar}>
+      <div className="fixed top-0 left-0 p-6 cursor-pointer lg:hidden z-10" onClick={() => setSidebarOpen(!isSidebarOpen)}>
         {
           isSidebarOpen ? 
           ( <XIcon className="h-8 w-8 text-primary" />) : (<MenuIcon className="h-8 w-8 text-primary" /> )

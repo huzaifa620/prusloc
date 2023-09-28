@@ -39,6 +39,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
   const [tableHeader, setTableHeader] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState("all");
   const [selectedId, setSelectedId] = useState<string[]>([]);
+  const [selectedCounty, setSelectedCounty] = useState<string>("all")
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -52,8 +53,11 @@ export default function ForeClosuresData({ data, tableName }: Props) {
   
     const isTdnNoSelected =
       selectedId.length === 0 || selectedId.includes(tnPublicNotice.id);
+
+    const isCountySelected = 
+      selectedCounty === "all" || selectedCounty.includes(tnPublicNotice.county)
   
-    return isDateSelected && isTdnNoSelected
+    return isDateSelected && isTdnNoSelected && isCountySelected
   };
 
   const exportToCSV = () => {
@@ -123,17 +127,17 @@ export default function ForeClosuresData({ data, tableName }: Props) {
             ))}
           </Select>
 
-          {/* <Select
+          <Select
             className="max-w-full sm:max-w-xs"
-            onValueChange={(value) => setSelectedOccurrence(parseInt(value))}
-            placeholder="Select Occurrence..."
+            onValueChange={(value) => setSelectedCounty(value)}
+            placeholder="Select County..."
           >
-            {[...new Set(data.map((item) => item.occurrence))].map((occurrence) => (
-              <SelectItem key={occurrence} value={occurrence.toString()}>
-                {occurrence}
+            {[...new Set(data.map((item) => item.county))].map((county) => (
+              <SelectItem key={county} value={county}>
+                {county}
               </SelectItem>
             ))}
-          </Select> */}
+          </Select>
         </div>
 
         <button

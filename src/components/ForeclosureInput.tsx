@@ -3,14 +3,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import  { ScriptContext } from "../contexts/Context";
 
-function isPastFriday(date: Date) {
-    return date.getDay() === 5 && date < new Date();
-}
+const isPastFriday = (date: Date) => date.getDay() === 5 && date < new Date() && date.toDateString() !== new Date().toDateString();
 
 export default function ForeclosureInput({ route }: { route: string }) {
 
     const { isInput, setIsInput } = useContext(ScriptContext)
-    const [selectedDate, setSelectedDate] = useState<Date | null>(new Date(new Date().setDate(new Date().getDate() - (new Date().getDay() + 2) % 7)));
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log('Form Data:', { date: new Date(selectedDate || '').toLocaleDateString('en-US') });

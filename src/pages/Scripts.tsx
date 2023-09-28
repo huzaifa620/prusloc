@@ -33,7 +33,7 @@ export default function Scripts() {
   }, [isInput])
 
   useEffect(() => {
-    const eventSource = new EventSource(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/status-updates`);
+    const eventSource = new EventSource(`https://prusloc.mhuzaifa4.repl.co/status-updates`);
   
     eventSource.addEventListener('message', (event) => {
       const eventData = JSON.parse(event.data);

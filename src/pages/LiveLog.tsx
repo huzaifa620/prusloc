@@ -10,7 +10,7 @@ function LiveLog() {
     { label: 'TN COURTS', endpoint: 'tn_courts' },
     { label: 'TNLEDGER FORECLOSURES', endpoint: 'tnledger_foreclosures' },
     { label: 'TNLEDGER COURTS', endpoint: 'tnledger_courts' },
-    { label: 'TN PUBLIC NOTICE PROBATE NOTICE', endpoint: 'tn_public_notice_probate_notice' },
+    // { label: 'TN PUBLIC NOTICE PROBATE NOTICE', endpoint: 'tn_public_notice_probate_notice' },
   ];
 
   const fetchLogForTab = async (tabIndex: number) => {

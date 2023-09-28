@@ -75,39 +75,43 @@ export default function Scripts() {
           </thead>
           <tbody key={scriptsStatus ? "1" : "2"} className="">
             {scriptsStatus.map((script, index) => (
-              <tr className="bg-white border-b" key={index}>
-                <th scope="row" className="px-6 py-4 font-medium text-primary whitespace-nowrap uppercase">
-                  {script.script.replace(/_/g, ' ')}
-                </th>
-                <td className="px-6 py-4">{script.status}</td>
-                <td className="px-6 py-4">{script.completion_date_and_time.split('T')[0]}</td>
-                <td className="px-6 py-4">
-                  <button
-                    disabled={script.status === 'running'}
-                    className={`bg-primary text-white rounded relative hover:bg-opacity-90 ${(script.status === 'running') && 'opacity-70 cursor-not-allowed'}`}
-                    onClick={() => {
-                      setIsInput(!isInput);
-                      setSelectedScript(script.script);
-                    }}
-                  >
-                    {(script.status === 'running') ? (
-                      <div className="flex items-center space-x-2 px-4 py-2">
-                        <div className="w-4 h-4 border-t-2 border-r-2 border-blue-500 rounded-full animate-spin"></div>
-                        <span>Running...</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center space-x-2 hover:translate-x-3 duration-500 px-4 py-2">
-                        <span>Run Script</span>
-                        <span className="text-xl">
-                          ▶️
-                        </span>
-                      </div>
-                    )}
-                  </button>
-
-                </td>
-
-              </tr>
+              
+              index !== 1 && (
+                <tr className="bg-white border-b" key={index}>
+                  <th scope="row" className="px-6 py-4 font-medium text-primary whitespace-nowrap uppercase">
+                    {script.script.replace(/_/g, ' ')}
+                  </th>
+                  <td className="px-6 py-4">{script.status}</td>
+                  <td className="px-6 py-4">{script.completion_date_and_time.split('T')[0]}</td>
+                  <td className="px-6 py-4">
+                    <button
+                      disabled={script.status === 'running'}
+                      className={`bg-primary text-white rounded relative hover:bg-opacity-90 ${(script.status === 'running') && 'opacity-70 cursor-not-allowed'}`}
+                      onClick={() => {
+                        setIsInput(!isInput);
+                        setSelectedScript(script.script);
+                      }}
+                    >
+                      {(script.status === 'running') ? (
+                        <div className="flex items-center space-x-2 px-4 py-2">
+                          <div className="w-4 h-4 border-t-2 border-r-2 border-blue-500 rounded-full animate-spin"></div>
+                          <span>Running...</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center space-x-2 hover:translate-x-3 duration-500 px-4 py-2">
+                          <span>Run Script</span>
+                          <span className="text-xl">
+                            ▶️
+                          </span>
+                        </div>
+                      )}
+                    </button>
+  
+                  </td>
+  
+                </tr>
+              )
+              
             ))}
           </tbody>
         </table>

@@ -74,7 +74,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
     // Create a temporary link element for initiating the download
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `${tableName}_filtered_data.csv`);
+    link.setAttribute("download", `${tableName}_${selectedDate}_${selectedOccurrence}_filtered_data.csv`);
   
     // Trigger a click event to download the CSV file
     link.click();

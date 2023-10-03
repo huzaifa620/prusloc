@@ -117,7 +117,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
             onValueChange={(value) => setSelectedDate(value)}
             placeholder="Select Date..."
           >
-            {[...new Set(data.map((item) => item.date_ran.split("T")[0]))].map((date) => (
+            {["all", ...new Set(data.map((item) => item.date_ran.split("T")[0]))].map((date) => (
               <SelectItem key={date} value={date}>
                 {date}
               </SelectItem>

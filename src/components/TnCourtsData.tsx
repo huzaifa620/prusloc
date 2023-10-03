@@ -28,11 +28,11 @@ export default function TnCourtsData( { data, tableName }: Props ) {
     const [selectedDate, setSelectedDate] = useState("all");
     const [selectedCaseType, setSelectedCaseType] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (data && data.length > 0) {
-      setTableHeader(Object.keys(data[0]));
-    }
-  }, [data]);
+    useEffect(() => {
+      if (data && data.length > 0) {
+        setTableHeader(Object.keys(data[0]));
+      }
+    }, [data]);
   
     const isTnCourtsSelected = (tncourts: TnCourts) =>
       (tncourts.date_ran === selectedDate || selectedDate === "all") &&
@@ -87,14 +87,14 @@ export default function TnCourtsData( { data, tableName }: Props ) {
             >
             {[...new Set(data.map((item) => item.case_type))].map((caseType) => (
                 <MultiSelectItem key={caseType} value={caseType}>
-                {caseType}
+                  {caseType}
                 </MultiSelectItem>
             ))}
           </MultiSelect>
 
           
           <Select className="max-w-full sm:max-w-xs" onValueChange={setSelectedDate} placeholder="Select Date...">
-              {[...new Set(data.map((item) => item.date_ran))].map((date) => (
+              {["all", ...new Set(data.map((item) => item.date_ran))].map((date) => (
                   <SelectItem key={date} value={date}>
                       {date}
                   </SelectItem>

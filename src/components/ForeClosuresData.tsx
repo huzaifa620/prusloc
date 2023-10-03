@@ -118,7 +118,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
             onValueChange={(value) => setSelectedDate(value)}
             placeholder="Select Date..."
           >
-            {[...new Set(data.map((item) => item.date_ran.split("T")[0]))].map((date) => (
+            {["all", ...new Set(data.map((item) => item.date_ran.split("T")[0]))].map((date) => (
               <SelectItem key={date} value={date}>
                 {date}
               </SelectItem>
@@ -127,10 +127,13 @@ export default function ForeClosuresData({ data, tableName }: Props) {
 
           <Select
             className="max-w-full sm:max-w-xs"
-            onValueChange={(value) => setSelectedOccurrence(parseInt(value))}
+            onValueChange={(value) => {
+              const selectedValue = value === 'all' ? 0 : parseInt(value);
+              setSelectedOccurrence(selectedValue);
+            }}
             placeholder="Select Occurrence..."
           >
-            {[...new Set(data.map((item) => item.occurrence))].map((occurrence) => (
+            {["all", ...new Set(data.map((item) => item.occurrence))].map((occurrence) => (
               <SelectItem key={occurrence} value={occurrence.toString()}>
                 {occurrence}
               </SelectItem>

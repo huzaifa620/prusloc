@@ -133,12 +133,16 @@ export default function ForeClosuresData({ data, tableName }: Props) {
             }}
             placeholder="Select Occurrence..."
           >
-            {["all", ...new Set(data.map((item) => item.occurrence))].map((occurrence) => (
-              <SelectItem key={occurrence} value={occurrence.toString()}>
-                {occurrence}
-              </SelectItem>
-            ))}
+            {["all", ...new Set(data.map((item) => item.occurrence))]
+              .map((occurrence) => (occurrence === 'all' ? 0 : parseInt(occurrence.toString())))
+              .sort((a, b) => a - b)
+              .map((occurrence) => (
+                <SelectItem key={occurrence} value={occurrence.toString()}>
+                  {occurrence === 0 ? 'all' : occurrence}
+                </SelectItem>
+              ))}
           </Select>
+
         </div>
 
         <button

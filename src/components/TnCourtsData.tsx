@@ -81,7 +81,7 @@ export default function TnCourtsData( { data, tableName }: Props ) {
 
         <div className="flex flex-col items-center justify-center lg:justify-start lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 w-full lg:w-4/5">
           <MultiSelect
-            className="max-w-full sm:max-w-xs"
+            className="w-full lg:w-1/2"
             onValueChange={setSelectedCaseType}
             placeholder="Select Case Type..."
             >

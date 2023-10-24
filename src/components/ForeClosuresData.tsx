@@ -91,19 +91,18 @@ export default function ForeClosuresData({ data, tableName }: Props) {
   };
 
   const handleDelete = async () => {
-    // Display a confirmation dialog before proceeding
-    const isConfirmed = window.confirm("Are you sure you want to delete the selected records?");
-    if (!isConfirmed) {
-      return; // User canceled the deletion
-    }
 
-    // Continue with the deletion
     const recordsToDelete = Object.keys(selectedRows)
-      .filter((tdn_no) => selectedRows[tdn_no])
-      .map((tdn_no) => data.find((item) => item.tdn_no === tdn_no))
-      .map((val) => val?.tdn_no)
-      .filter(Boolean);
+    .filter((tdn_no) => selectedRows[tdn_no])
+    .map((tdn_no) => data.find((item) => item.tdn_no === tdn_no))
+    .map((val) => val?.tdn_no)
+    .filter(Boolean);
 
+    const isConfirmed = window.confirm(`Are you sure you want to delete the selected(${recordsToDelete.length}) listings ?`);
+    if (!isConfirmed) {
+      return;
+    }
+    
     try {
       const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/delete-listings`, {
         method: "POST",

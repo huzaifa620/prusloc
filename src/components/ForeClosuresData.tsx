@@ -98,6 +98,10 @@ export default function ForeClosuresData({ data, tableName }: Props) {
     .map((val) => val?.tdn_no)
     .filter(Boolean);
 
+    if (recordsToDelete){
+
+    }
+
     const isConfirmed = window.confirm(`Are you sure you want to delete the selected(${recordsToDelete.length}) listings ?`);
     if (!isConfirmed) {
       return;
@@ -120,6 +124,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
     } catch (error) {
       console.error("Error deleting records:", error);
     }
+    
   };
 
   return (

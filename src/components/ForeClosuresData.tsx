@@ -15,7 +15,7 @@ import {
   MultiSelect,
   MultiSelectItem,
 } from "@tremor/react";
-import { InformationCircleIcon, ArrowCircleDownIcon } from "@heroicons/react/solid";
+import { InformationCircleIcon, ArrowCircleDownIcon, TrashIcon } from "@heroicons/react/solid";
 
 export type Foreclosure = {
   date_ran: string;
@@ -30,7 +30,7 @@ export type Foreclosure = {
 
 type Props = {
   data: Foreclosure[];
-  tableName: String;
+  tableName: string;
 };
 
 export default function ForeClosuresData({ data, tableName }: Props) {
@@ -38,6 +38,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
   const [selectedDate, setSelectedDate] = useState("all");
   const [selectedTdnNo, setSelectedTdnNo] = useState<string[]>([]);
   const [selectedOccurrence, setSelectedOccurrence] = useState<number>(0);
+  const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     if (data && data.length > 0) {
@@ -45,61 +46,93 @@ export default function ForeClosuresData({ data, tableName }: Props) {
     }
   }, [data]);
 
-  const isForeclosureSelected = (foreclosures: Foreclosure) => {
+  const isForeclosureSelected = (foreclosure: Foreclosure) => {
     const isDateSelected =
-      selectedDate === "all" || foreclosures.date_ran.split("T")[0] === selectedDate;
-  
+      selectedDate === "all" || foreclosure.date_ran.split("T")[0] === selectedDate;
     const isTdnNoSelected =
-      selectedTdnNo.length === 0 || selectedTdnNo.includes(foreclosures.tdn_no);
-  
+      selectedTdnNo.length === 0 || selectedTdnNo.includes(foreclosure.tdn_no);
     const isOccurrenceSelected =
-      selectedOccurrence === 0 || foreclosures.occurrence === selectedOccurrence;
-  
+      selectedOccurrence === 0 || foreclosure.occurrence === selectedOccurrence;
+
     return isDateSelected && isTdnNoSelected && isOccurrenceSelected;
   };
 
   const exportToCSV = () => {
     // Filter the data based on the selected filters
     const filteredData = data.filter((item) => isForeclosureSelected(item));
-  
+
     // Create a CSV string from the filtered data
     const csvData = Papa.unparse(filteredData);
-  
+
     // Create a Blob object containing the CSV data
     const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
-  
+
     // Create a temporary URL for downloading the Blob
     const url = window.URL.createObjectURL(blob);
-  
+
     // Create a temporary link element for initiating the download
+    const filename = `${tableName}_${selectedDate}_${selectedOccurrence}_filtered_data.csv`;
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `${tableName}_${selectedDate}_${selectedOccurrence}_filtered_data.csv`);
-  
+    link.setAttribute("download", filename);
+
     // Trigger a click event to download the CSV file
     link.click();
-  
+
     // Release the temporary URL and link
     window.URL.revokeObjectURL(url);
   };
-  
+
+  const handleRowSelection = (tdn_no: string) => {
+    setSelectedRows((prevSelectedRows) => ({
+      ...prevSelectedRows,
+      [tdn_no]: !prevSelectedRows[tdn_no],
+    }));
+  };
+
+  const handleDelete = async () => {
+    // Display a confirmation dialog before proceeding
+    const isConfirmed = window.confirm("Are you sure you want to delete the selected records?");
+    if (!isConfirmed) {
+      return; // User canceled the deletion
+    }
+
+    // Continue with the deletion
+    const recordsToDelete = Object.keys(selectedRows)
+      .filter((tdn_no) => selectedRows[tdn_no])
+      .map((tdn_no) => data.find((item) => item.tdn_no === tdn_no))
+      .map((val) => val?.tdn_no)
+      .filter(Boolean);
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/delete-listings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tableName, recordsToDelete }),
+      });
+
+      if (response.ok) {
+        console.log("Records deleted successfully");
+      } else {
+        console.error("Error deleting records");
+      }
+    } catch (error) {
+      console.error("Error deleting records:", error);
+    }
+  };
 
   return (
     <div className="bg-white p-8 h-full rounded-3xl border shadow-2xl">
-
       <div>
         <Flex className="space-x-0.5" justifyContent="start" alignItems="center">
           <Title className="uppercase"> {tableName.replace("_", " ")} </Title>
-          <Icon
-            icon={InformationCircleIcon}
-            variant="simple"
-            tooltip={`Items in ${tableName} table`}
-          />
+          <Icon icon={InformationCircleIcon} variant="simple" tooltip={`Items in ${tableName} table`} />
         </Flex>
       </div>
 
       <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 mt-2 items-center justify-between w-full">
-
         <div className="flex flex-col items-center justify-center lg:justify-start lg:flex-row w-full lg:w-4/5 space-y-2 lg:space-y-0 lg:space-x-2 mt-2">
           <MultiSelect
             className="max-w-full sm:max-w-xs"
@@ -128,37 +161,43 @@ export default function ForeClosuresData({ data, tableName }: Props) {
           <Select
             className="max-w-full sm:max-w-xs"
             onValueChange={(value) => {
-              const selectedValue = value === 'all' ? 0 : parseInt(value);
+              const selectedValue = value === "all" ? 0 : parseInt(value);
               setSelectedOccurrence(selectedValue);
             }}
             placeholder="Select Occurrence..."
           >
             {["all", ...new Set(data.map((item) => item.occurrence))]
-              .map((occurrence) => (occurrence === 'all' ? 0 : parseInt(occurrence.toString())))
+              .map((occurrence) => (occurrence === "all" ? 0 : parseInt(occurrence.toString())))
               .sort((a, b) => a - b)
               .map((occurrence) => (
                 <SelectItem key={occurrence} value={occurrence.toString()}>
-                  {occurrence === 0 ? 'all' : occurrence}
+                  {occurrence === 0 ? "all" : occurrence}
                 </SelectItem>
               ))}
           </Select>
-
         </div>
 
         <button
-          className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark hover:bg-opacity-90 flex items-center justify-center space-x-2 group"
+          className="mt-4 bg-red-500 text-white py-3 px-4 rounded-md hover:bg-red-600 hover-bg-opacity-90 flex items-center justify-center space-x-2 group lg:w-[18%]"
+          onClick={handleDelete}
+        >
+          <p>Delete Selected</p>
+          <TrashIcon className="h-8 w-8 transform group-hover:animate-ping" />
+        </button>
+
+        <button
+          className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark hover-bg-opacity-90 flex items-center justify-center space-x-2 group lg:w-[15%]"
           onClick={exportToCSV}
         >
           <p>Export CSV</p>
           <ArrowCircleDownIcon className="h-8 w-8 transform group-hover:animate-bounce" />
         </button>
-
-        
       </div>
 
       <Table className="mt-4 h-[55%] sm:h-[80%] 2xl:h-[87%] border rounded-xl">
         <TableHead className="bg-primary">
           <TableRow>
+            <TableHeaderCell key="empty" className="text-center"></TableHeaderCell>
             {tableHeader.map((item, index) => (
               <TableHeaderCell key={index} className={`uppercase text-white text-center ${index === 0 ? "" : ""}`}>
                 {item.replace("_", " ")}
@@ -168,20 +207,25 @@ export default function ForeClosuresData({ data, tableName }: Props) {
         </TableHead>
 
         <TableBody className="font-semibold text-tremor-content-emphasis">
-          {data
-            .filter((item) => isForeclosureSelected(item))
-            .map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.date_ran.split("T")[0]}</TableCell>
-                <TableCell className="text-center">{item.tdn_no}</TableCell>
-                <TableCell className="text-center">{item.url}</TableCell>
-                <TableCell className="text-center">{item.borrower}</TableCell>
-                <TableCell className="text-center">{item.address}</TableCell>
-                <TableCell className="text-center">{item.original_trustee}</TableCell>
-                <TableCell className="text-center">{item.auction_date.split('T')[0]}</TableCell>
-                <TableCell className="text-center">{item.occurrence}</TableCell>
-              </TableRow>
-            ))}
+          {data.filter((item) => isForeclosureSelected(item)).map((item) => (
+            <TableRow key={item.tdn_no}>
+              <TableCell>
+                <input
+                  type="checkbox"
+                  checked={selectedRows[item.tdn_no] || false}
+                  onChange={() => handleRowSelection(item.tdn_no)}
+                />
+              </TableCell>
+              <TableCell>{item.date_ran.split("T")[0]}</TableCell>
+              <TableCell className="text-center">{item.tdn_no}</TableCell>
+              <TableCell className="text-center">{item.url}</TableCell>
+              <TableCell className="text-center">{item.borrower}</TableCell>
+              <TableCell className="text-center">{item.address}</TableCell>
+              <TableCell className="text-center">{item.original_trustee}</TableCell>
+              <TableCell className="text-center">{item.auction_date.split("T")[0]}</TableCell>
+              <TableCell className="text-center">{item.occurrence}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>

@@ -98,31 +98,38 @@ export default function ForeClosuresData({ data, tableName }: Props) {
     .map((val) => val?.tdn_no)
     .filter(Boolean);
 
-    if (recordsToDelete){
+    let confirmationMessage = "";
+    let deletionData = {};
 
+    if (recordsToDelete.length === 0 && selectedDate !== 'all') {
+      confirmationMessage = `Are you sure you want to delete all listings with date ${selectedDate} ?`;
+      deletionData = { tableName, selectedDate };
+    } else {
+      confirmationMessage = `Are you sure you want to delete the selected (${recordsToDelete.length}) listings ?`;
+      deletionData = { tableName, recordsToDelete };
     }
 
-    const isConfirmed = window.confirm(`Are you sure you want to delete the selected(${recordsToDelete.length}) listings ?`);
+    const isConfirmed = window.confirm(confirmationMessage);
     if (!isConfirmed) {
       return;
     }
-    
+
     try {
       const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/delete-listings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ tableName, recordsToDelete }),
+        body: JSON.stringify(deletionData),
       });
 
       if (response.ok) {
-        console.log("Records deleted successfully");
+        console.log('Deleted')
       } else {
-        console.error("Error deleting records");
+        alert("Error deleting records");
       }
     } catch (error) {
-      console.error("Error deleting records:", error);
+      alert("Error deleting records");
     }
     
   };

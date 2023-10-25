@@ -1,20 +1,6 @@
 import { useState, useEffect } from "react";
 import Papa from "papaparse";
-import {
-  Icon,
-  Table,
-  TableRow,
-  TableCell,
-  TableHead,
-  TableHeaderCell,
-  TableBody,
-  Title,
-  Flex,
-  Select,
-  SelectItem,
-  MultiSelect,
-  MultiSelectItem,
-} from "@tremor/react";
+import { Icon, Table, TableRow, TableCell, TableHead, TableHeaderCell, TableBody, Title, Flex, Select, SelectItem, MultiSelect, MultiSelectItem } from "@tremor/react";
 import { InformationCircleIcon, ArrowCircleDownIcon } from "@heroicons/react/solid";
 
 export type TnPublicNotice = {

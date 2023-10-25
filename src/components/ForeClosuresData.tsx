@@ -124,7 +124,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
       });
 
       if (response.ok) {
-        console.log('Deleted')
+        window.location.reload()
       } else {
         alert("Error deleting records");
       }

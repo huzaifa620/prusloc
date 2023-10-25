@@ -90,6 +90,8 @@ export default function ForeClosuresData({ data, tableName }: Props) {
     let confirmationMessage = "";
     let deletionData = {};
 
+    if (recordsToDelete.length === 0 && selectedDate === 'all') return
+
     if (recordsToDelete.length === 0 && selectedDate !== 'all') {
       confirmationMessage = `Are you sure you want to delete all listings with date ${selectedDate} ?`;
       deletionData = { tableName, selectedDate };

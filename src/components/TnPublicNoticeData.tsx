@@ -214,12 +214,12 @@ export default function ForeClosuresData({ data, tableName }: Props) {
             .map((item, index) => (
               <TableRow key={index}>
                 <TableCell>
-                <input
-                  type="checkbox"
-                  checked={selectedRows[item.id] || false}
-                  onChange={() => handleRowSelection(item.id)}
-                />
-              </TableCell>
+                  <input
+                    type="checkbox"
+                    checked={selectedRows[item.id] || false}
+                    onChange={() => handleRowSelection(item.id)}
+                  />
+                </TableCell>
                 <TableCell>{item.date_ran.split("T")[0]}</TableCell>
                 <TableCell className="text-center">{item.county}</TableCell>
                 <TableCell className="text-center">{item.id}</TableCell>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon,Table,TableRow, TableCell, TableHead, TableHeaderCell,TableBody, Title, Flex, Select, SelectItem, MultiSelect, MultiSelectItem } from "@tremor/react";
-import { InformationCircleIcon, ArrowCircleDownIcon } from "@heroicons/react/solid";
+import { InformationCircleIcon, ArrowCircleDownIcon, TrashIcon } from "@heroicons/react/solid";
 import { useState, useEffect } from "react";
 import Papa from "papaparse";
 
@@ -27,6 +27,7 @@ export default function TnCourtsData( { data, tableName }: Props ) {
     const [tableHeader, setTableHeader] = useState<string[]>([])
     const [selectedDate, setSelectedDate] = useState("all");
     const [selectedCaseType, setSelectedCaseType] = useState<string[]>([]);
+    const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
       if (data && data.length > 0) {
@@ -61,6 +62,57 @@ export default function TnCourtsData( { data, tableName }: Props ) {
     
       // Release the temporary URL and link
       window.URL.revokeObjectURL(url);
+    };
+
+    const handleRowSelection = (id: string) => {
+      setSelectedRows((prevSelectedRows) => ({
+        ...prevSelectedRows,
+        [id]: !prevSelectedRows[id],
+      }));
+    };
+  
+    const handleDelete = async () => {
+  
+      const recordsToDelete = Object.keys(selectedRows)
+      .filter((url) => selectedRows[url])
+      .map((url) => data.find((item) => item.url === url))
+      .map((val) => val?.url)
+      .filter(Boolean);
+  
+      let confirmationMessage = "";
+      let deletionData = {};
+  
+      if (recordsToDelete.length === 0 && selectedDate !== 'all') {
+        confirmationMessage = `Are you sure you want to delete all listings with date ${selectedDate} ?`;
+        deletionData = { tableName, selectedDate };
+      } else {
+        confirmationMessage = `Are you sure you want to delete the selected (${recordsToDelete.length}) listings ?`;
+        deletionData = { tableName, recordsToDelete };
+      }
+  
+      const isConfirmed = window.confirm(confirmationMessage);
+      if (!isConfirmed) {
+        return;
+      }
+  
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/delete-listings`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(deletionData),
+        });
+  
+        if (response.ok) {
+          window.location.reload()
+        } else {
+          alert("Error deleting records");
+        }
+      } catch (error) {
+        alert("Error deleting records");
+      }
+      
     };
 
   return (
@@ -103,7 +155,18 @@ export default function TnCourtsData( { data, tableName }: Props ) {
 
         </div>
 
-        <button className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark hover:bg-opacity-90 flex items-center justify-center space-x-2 group" onClick={exportToCSV}>
+        <button
+          className="mt-4 bg-red-500 text-white py-3 px-4 rounded-md hover:bg-red-600 hover-bg-opacity-90 flex items-center justify-center space-x-2 group lg:w-[18%]"
+          onClick={handleDelete}
+        >
+          <p>Delete Selected</p>
+          <TrashIcon className="h-8 w-8 transform group-hover:animate-ping" />
+        </button>
+
+        <button
+          className="mt-4 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark hover-bg-opacity-90 flex items-center justify-center space-x-2 group lg:w-[15%]"
+          onClick={exportToCSV}
+        >
           <p>Export CSV</p>
           <ArrowCircleDownIcon className="h-8 w-8 transform group-hover:animate-bounce" />
         </button>
@@ -114,6 +177,7 @@ export default function TnCourtsData( { data, tableName }: Props ) {
 
         <TableHead className="bg-primary">
             <TableRow>
+              <TableHeaderCell key="empty" className="text-center"></TableHeaderCell>
                 {tableHeader.map((item, index) => (
                     <TableHeaderCell key={index} className={`uppercase text-white text-center ${index === 0 ? '' : ''}`}>
                         {item.replace('_', ' ')}
@@ -127,6 +191,13 @@ export default function TnCourtsData( { data, tableName }: Props ) {
             .filter((item) => isTnCourtsSelected(item))
             .map((item, index) => (
               <TableRow key={index}>
+                <TableCell>
+                  <input
+                    type="checkbox"
+                    checked={selectedRows[item.url] || false}
+                    onChange={() => handleRowSelection(item.url)}
+                  />
+                </TableCell>
                 <TableCell>{item.date_ran}</TableCell>
                 <TableCell className="text-center">{item.case_type}</TableCell>
                 <TableCell className="text-center">{item.case_name}</TableCell>

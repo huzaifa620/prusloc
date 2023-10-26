@@ -28,6 +28,13 @@ export default function ForeClosuresData({ data, tableName }: Props) {
   const [selectedCounty, setSelectedCounty] = useState<string>("all")
   const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
 
+  const [userName, setUserName] = useState<string>('')
+
+  useEffect(() => {
+    const username = localStorage.getItem("username");
+    setUserName(username || '');
+  }, [userName])
+
   useEffect(() => {
     if (data && data.length > 0) {
       setTableHeader(Object.keys(data[0]));
@@ -94,10 +101,10 @@ export default function ForeClosuresData({ data, tableName }: Props) {
 
     if (recordsToDelete.length === 0 && selectedDate !== 'all') {
       confirmationMessage = `Are you sure you want to delete all listings with date ${selectedDate} ?`;
-      deletionData = { tableName, selectedDate };
+      deletionData = { tableName, selectedDate, userName };
     } else {
       confirmationMessage = `Are you sure you want to delete the selected (${recordsToDelete.length}) listings ?`;
-      deletionData = { tableName, recordsToDelete };
+      deletionData = { tableName, recordsToDelete, userName };
     }
 
     const isConfirmed = window.confirm(confirmationMessage);
@@ -114,7 +121,10 @@ export default function ForeClosuresData({ data, tableName }: Props) {
 
       if (response.ok) {
         window.location.reload()
-      } else {
+      } else if (response.status === 401) {
+        alert("Unauthorized action: Only admin can perform deletions!")
+      }
+       else {
         alert("Error deleting records");
       }
     } catch (error) {

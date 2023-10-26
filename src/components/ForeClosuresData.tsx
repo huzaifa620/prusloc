@@ -98,9 +98,7 @@ export default function ForeClosuresData({ data, tableName }: Props) {
     }
 
     const isConfirmed = window.confirm(confirmationMessage);
-    if (!isConfirmed) {
-      return;
-    }
+    if (!isConfirmed) return
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_NODE_WEBHOOK_URL}/api/delete-listings`, {
